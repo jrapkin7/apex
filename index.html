@@ -1,0 +1,675 @@
+<title>Apex — Your Intake</title>
+<style>
+  :root {
+    --paper: #FAF7F0;
+    --ground: #EFE9DB;
+    --ink: #1A1B20;
+    --ink-soft: #5c5d66;
+    --green: #B85C2A;
+    --green-deep: #8f4720;
+    --green-tint: #f4e7dc;
+    --gold: #D9552E;
+    --gold-deep: #b8431f;
+    --line: #ddd4c4;
+    --flag: #a05a2f;
+    --flag-tint: #f4e8da;
+    --shadow: 0 1px 2px rgba(26,27,32,.05), 0 12px 34px -18px rgba(26,27,32,.30);
+    --serif: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #1c1e23; --ground: #131418; --ink: #f0ece2; --ink-soft: #9a9ba6;
+      --green: #E08A5A; --green-deep: #c9703c; --green-tint: #241d18;
+      --gold: #E4653A; --gold-deep: #f07a4a; --line: #2c2e35;
+      --flag: #d3925c; --flag-tint: #241c15;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -20px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #FAF7F0; --ground: #EFE9DB; --ink: #1A1B20; --ink-soft: #5c5d66;
+    --green: #B85C2A; --green-deep: #8f4720; --green-tint: #f4e7dc;
+    --gold: #D9552E; --gold-deep: #b8431f; --line: #ddd4c4; --flag: #a05a2f; --flag-tint: #f4e8da;
+    --shadow: 0 1px 2px rgba(26,27,32,.05), 0 12px 34px -18px rgba(26,27,32,.30);
+  }
+  :root[data-theme="dark"] {
+    --paper: #1c1e23; --ground: #131418; --ink: #f0ece2; --ink-soft: #9a9ba6;
+    --green: #E08A5A; --green-deep: #c9703c; --green-tint: #241d18;
+    --gold: #E4653A; --gold-deep: #f07a4a; --line: #2c2e35; --flag: #d3925c; --flag-tint: #241c15;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -20px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--sans); line-height: 1.55;
+    font-size: 17px; letter-spacing: .1px;
+    padding: env(safe-area-inset-top) 0 0;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 20px 18px 96px; }
+
+  /* Masthead */
+  .mast { display: flex; align-items: center; justify-content: space-between; padding: 6px 2px 18px; }
+  .brand { display: flex; align-items: baseline; gap: 8px; }
+  .brand b { font-family: var(--mono); font-weight: 600; color: var(--green); font-size: 15px; letter-spacing: .18em; text-transform: uppercase; }
+  .brand span { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .2em; color: var(--ink-soft); font-weight: 500; }
+  .mark { width: 11px; height: 11px; flex: none; }
+  .themebtn { background: none; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 999px; width: 34px; height: 34px; cursor: pointer; display: grid; place-items: center; font-size: 15px; }
+  .themebtn:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .choice:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  /* Progress */
+  .track { height: 5px; background: var(--line); border-radius: 999px; overflow: hidden; margin: 2px 2px 6px; }
+  .fill { height: 100%; width: 8%; background: var(--green); border-radius: 999px; transition: width .45s cubic-bezier(.2,.7,.2,1); }
+  .stepno { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .13em; color: var(--ink-soft); font-weight: 500; padding: 0 3px 14px; }
+
+  /* Card */
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 30px 26px 26px; }
+  @media (max-width: 480px){ .card{ padding: 24px 18px 20px; border-radius: 16px; } .wrap{ padding: 14px 12px 96px; } }
+
+  .eyebrow { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .15em; color: var(--green); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.15; margin: 0 0 10px; text-wrap: balance; letter-spacing: -.2px; }
+  h1.big { font-size: 34px; }
+  .lede { color: var(--ink-soft); margin: 0 0 22px; font-size: 16.5px; }
+  .panel { display: none; }
+  .panel.active { display: block; animation: rise .38s cubic-bezier(.2,.7,.2,1); }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce){ .panel.active{ animation: none; } .fill{ transition: none; } }
+
+  label.q { display: block; font-weight: 600; margin: 20px 0 7px; font-size: 15.5px; }
+  label.q .opt { font-weight: 500; color: var(--ink-soft); }
+  .hint { font-size: 13.5px; color: var(--ink-soft); margin: -3px 0 8px; }
+  input[type=text], input[type=number], select, textarea {
+    width: 100%; font: inherit; font-size: 16.5px; color: var(--ink);
+    background: var(--ground); border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 12px 14px; transition: border-color .15s, background .15s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--green); background: var(--paper); }
+  textarea { min-height: 74px; resize: vertical; line-height: 1.5; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 420px){ .row2{ grid-template-columns: 1fr; } }
+  select { -webkit-appearance: none; appearance: none; background-image: linear-gradient(45deg,transparent 50%,var(--ink-soft) 50%),linear-gradient(135deg,var(--ink-soft) 50%,transparent 50%); background-position: calc(100% - 20px) center, calc(100% - 15px) center; background-size: 5px 5px,5px 5px; background-repeat: no-repeat; padding-right: 40px; }
+
+  /* Checkbox / radio pills */
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .pill { position: relative; }
+  .pill input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .pill span { display: block; padding: 9px 14px; border: 1.5px solid var(--line); border-radius: 999px; font-size: 14.5px; cursor: pointer; background: var(--ground); transition: .15s; user-select: none; }
+  .pill input:checked + span { border-color: var(--green); background: var(--green-tint); color: var(--green-deep); font-weight: 600; }
+  .pill input:focus-visible + span { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  /* Tier choice cards */
+  .tiers { display: grid; gap: 12px; margin-top: 4px; }
+  .choice { text-align: left; width: 100%; cursor: pointer; background: var(--ground); border: 1.5px solid var(--line); border-radius: 16px; padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start; transition: .16s; color: inherit; font: inherit; }
+  .choice:hover { border-color: var(--green); transform: translateY(-1px); }
+  .choice[aria-pressed="true"] { border-color: var(--green); background: var(--green-tint); box-shadow: inset 0 0 0 1px var(--green); }
+  .dot { flex: none; width: 30px; height: 30px; border-radius: 50%; margin-top: 2px; display: grid; place-items: center; font-family: var(--serif); font-weight: 600; color: #fff; font-size: 15px; }
+  .tg { background: #cf9a6a; } .tb { background: var(--green); } .tw { background: var(--green-deep); }
+  .choice h3 { margin: 0 0 3px; font-family: var(--serif); font-size: 19px; font-weight: 600; }
+  .choice p { margin: 0; font-size: 14px; color: var(--ink-soft); line-height: 1.45; }
+
+  /* Nav */
+  .nav { display: flex; gap: 12px; margin-top: 28px; align-items: center; }
+  .btn { font: inherit; font-weight: 600; font-size: 16px; border-radius: 999px; padding: 13px 26px; cursor: pointer; border: 1.5px solid transparent; transition: .15s; }
+  .btn-primary { background: var(--gold); color: #FAF7F0; border-color: var(--gold); box-shadow: 0 8px 20px -10px var(--gold-deep); }
+  .btn-primary:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+  .btn-ghost { background: none; color: var(--ink-soft); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .nav .spacer { flex: 1; }
+
+  /* Safety flag */
+  .flag { display: none; margin-top: 16px; background: var(--flag-tint); border: 1px solid var(--flag); border-radius: 12px; padding: 13px 15px; font-size: 14.5px; color: var(--ink); }
+  .flag.show { display: block; }
+  .flag b { color: var(--flag); }
+
+  /* Review / Blueprint */
+  .score { text-align: center; margin: 4px 0 20px; }
+  .meter { height: 12px; background: var(--line); border-radius: 999px; overflow: hidden; margin: 12px 0 8px; }
+  .meter i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--green), var(--gold)); transition: width 1s cubic-bezier(.2,.7,.2,1); }
+  .scoreN { font-family: var(--serif); font-size: 40px; font-weight: 600; color: var(--green); line-height: 1; }
+  .scoreL { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-soft); font-weight: 500; }
+  .est { background: var(--green-tint); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 16px; margin: 4px 0 16px; }
+  .esttitle { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .13em; color: var(--green-deep); font-weight: 600; margin: 0 0 12px; }
+  .esttitle span { color: var(--ink-soft); }
+  .estrow { display: flex; gap: 8px; }
+  .estcell { flex: 1; text-align: center; padding: 4px 2px; }
+  .estcell b { display: block; font-family: var(--serif); font-size: 25px; font-weight: 700; letter-spacing: -.5px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .estcell span { font-family: var(--mono); font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; }
+  .macbar { display: flex; height: 9px; border-radius: 999px; overflow: hidden; margin: 14px 2px 8px; background: var(--line); }
+  .macbar i { height: 100%; display: block; }
+  .estnote { font-size: 12.5px; color: var(--ink-soft); margin: 12px 0 0; line-height: 1.5; }
+  .summary { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin: 18px 0; }
+  .summary dl { margin: 0; }
+  .summary .r { display: grid; grid-template-columns: 128px 1fr; gap: 10px; padding: 11px 15px; border-top: 1px solid var(--line); font-size: 14.5px; }
+  .summary .r:first-child { border-top: none; }
+  .summary dt { color: var(--ink-soft); font-weight: 600; }
+  .summary dd { margin: 0; }
+  .next { background: var(--green-tint); border-radius: 14px; padding: 16px 18px; margin: 16px 0; }
+  .next h3 { margin: 0 0 8px; font-family: var(--serif); font-size: 18px; color: var(--green-deep); }
+  .next ul { margin: 0; padding-left: 18px; } .next li { margin: 5px 0; font-size: 14.5px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); background: var(--green-deep); color: #fff; padding: 11px 20px; border-radius: 999px; font-size: 14.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: .3s; z-index: 50; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .foot { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 26px; }
+  .foot b { color: var(--green); font-family: var(--serif); font-weight: 600; }
+</style>
+
+<div class="wrap">
+  <div class="mast">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" aria-hidden="true"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5" stroke="var(--green)"/></svg>
+      <b>Apex</b><span>Intake</span>
+    </div>
+    <button class="themebtn" id="theme" aria-label="Toggle light or dark">◑</button>
+  </div>
+
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="stepno" id="stepno">Getting started</div>
+
+  <div class="card">
+    <!-- 0 WELCOME -->
+    <section class="panel active" data-step="0">
+      <p class="eyebrow">Welcome</p>
+      <h1 class="big">Let's build the plan that's actually right for you.</h1>
+      <p class="lede">No forms to dread. A few honest questions, and you'll walk away with a starting plan and a clear next step — however deep you want to go. Takes about 10 minutes. Your voice, your pace.</p>
+      <label class="q" for="name">First, what should we call you?</label>
+      <input type="text" id="name" name="name" placeholder="Your first name" autocomplete="given-name">
+      <div class="nav"><span class="spacer"></span><button class="btn btn-primary" data-next>Let's go →</button></div>
+    </section>
+
+    <!-- 1 TIER -->
+    <section class="panel" data-step="1">
+      <p class="eyebrow">Choose your depth</p>
+      <h1>How hands-on do you want to be, <span class="nm">friend</span>?</h1>
+      <p class="lede">No wrong answer — and you can level up anytime. This just decides how precise we get on day one.</p>
+      <div class="tiers">
+        <button type="button" class="choice" data-tier="Good" aria-pressed="false">
+          <span class="dot tg">G</span>
+          <span><h3>Just get me started</h3><p>The simplest plan, no testing needed. Real results from the fundamentals — starting today.</p></span>
+        </button>
+        <button type="button" class="choice" data-tier="Better" aria-pressed="false">
+          <span class="dot tb">B</span>
+          <span><h3>I'll do a little more</h3><p>Add a wearable and some basic bloodwork for a sharper, more personal plan.</p></span>
+        </button>
+        <button type="button" class="choice" data-tier="Way Better" aria-pressed="false">
+          <span class="dot tw">W</span>
+          <span><h3>Give me the works</h3><p>Full testing — body composition, VO₂, labs — for maximum precision. The complete picture.</p></span>
+        </button>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next id="tierNext" disabled>Continue →</button></div>
+    </section>
+
+    <!-- 2 BASICS -->
+    <section class="panel" data-step="2">
+      <p class="eyebrow">The basics</p>
+      <h1>A quick snapshot of where you are today.</h1>
+      <p class="lede">These few numbers let us estimate your metabolism and macros by formula — no testing required.</p>
+      <div class="row2">
+        <div><label class="q" for="age">Age</label><input type="number" id="age" name="age" min="10" max="100" placeholder="—" inputmode="numeric"></div>
+        <div><label class="q" for="sex">Sex <span class="opt">(for the metabolic formula)</span></label><select id="sex" name="sex"><option value="">Select…</option><option>Male</option><option>Female</option></select></div>
+      </div>
+      <div class="row2">
+        <div><label class="q">Height</label>
+          <div style="display:flex;gap:8px">
+            <input type="number" id="ht_ft" name="ht_ft" min="3" max="8" placeholder="ft" aria-label="Height in feet" inputmode="numeric">
+            <input type="number" id="ht_in" name="ht_in" min="0" max="11" placeholder="in" aria-label="Height inches" inputmode="numeric">
+          </div>
+        </div>
+        <div><label class="q" for="wt_lb">Weight <span class="opt">(lb)</span></label><input type="number" id="wt_lb" name="wt_lb" min="50" max="700" placeholder="e.g. 190" inputmode="numeric"></div>
+      </div>
+      <label class="q" for="activity">Overall activity level <span class="opt">(your whole day — job + life, not just workouts)</span></label>
+      <select id="activity" name="activity">
+        <option value="">Select…</option>
+        <option>Sedentary</option>
+        <option>Lightly active</option>
+        <option>Moderately active</option>
+        <option>Very active</option>
+        <option>Athlete</option>
+      </select>
+      <div class="row2">
+        <div><label class="q" for="bodyfat">Body-fat % <span class="opt">(if you know it)</span></label><input type="number" id="bodyfat" name="bodyfat" min="3" max="60" placeholder="optional" inputmode="numeric"></div>
+        <div><label class="q" for="city">Location <span class="opt">(timezone)</span></label><input type="text" id="city" name="city" placeholder="City, State"></div>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 3 GOAL -->
+    <section class="panel" data-step="3">
+      <p class="eyebrow">Your goal &amp; your why</p>
+      <h1>What do you actually want to change?</h1>
+      <label class="q" for="goal">Pick the closest — we'll get specific later.</label>
+      <select id="goal" name="goal">
+        <option value="">Select…</option>
+        <option>Lose fat</option><option>Build muscle</option><option>Get stronger</option>
+        <option>More energy &amp; feel better</option><option>Longevity &amp; health markers</option>
+        <option>Athletic performance</option><option>Look better / body confidence</option>
+      </select>
+      <label class="q" for="why">Why now? What's this really about for you?</label>
+      <p class="hint">The honest version. This is what we'll remind you of on the hard days.</p>
+      <textarea id="why" name="why" placeholder="Type or talk it out…"></textarea>
+      <label class="q" for="vision">If we made real progress in 90 days, what would that look like?</label>
+      <textarea id="vision" name="vision" placeholder="Paint the picture…"></textarea>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 4 HEALTH -->
+    <section class="panel" data-step="4">
+      <p class="eyebrow">Health &amp; safety</p>
+      <h1>Anything we should know before you move a muscle?</h1>
+      <p class="lede">This keeps you safe. Check anything that applies — honesty here protects you.</p>
+      <label class="q">Do any of these apply to you?</label>
+      <div class="checks" id="safetyChecks">
+        <label class="pill"><input type="checkbox" name="safety" value="Heart condition" data-gate><span>Heart condition</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="Chest pain with exertion" data-gate><span>Chest pain when active</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="High blood pressure (uncontrolled)" data-gate><span>Uncontrolled blood pressure</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="Pregnant / postpartum" data-gate><span>Pregnant / postpartum</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="Recent surgery" data-gate><span>Recent surgery</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="Eating-disorder history" data-gate><span>Eating-disorder history</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="Diabetes" ><span>Diabetes</span></label>
+        <label class="pill"><input type="checkbox" name="safety" value="None of these"><span>None of these</span></label>
+      </div>
+      <div class="flag" id="gateFlag"><b>Good to flag.</b> We'll still get you set up — but before your training or nutrition plan goes live, your coach will ask for a quick OK from your doctor. Safety before speed.</div>
+      <label class="q" for="injuries">Injuries, surgeries, or anything that hurts / you avoid? <span class="opt">(optional)</span></label>
+      <textarea id="injuries" name="injuries" placeholder="e.g. hip replacement 2026, bad left shoulder…"></textarea>
+      <label class="q" for="meds">Medications or supplements you take <span class="opt">(optional)</span></label>
+      <textarea id="meds" name="meds" placeholder="List anything relevant…"></textarea>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 5 TRAINING -->
+    <section class="panel" data-step="5">
+      <p class="eyebrow">Training life</p>
+      <h1>How does movement fit your life right now?</h1>
+      <label class="q" for="activity">What do you do now, if anything?</label>
+      <input type="text" id="activity" name="activity" placeholder="e.g. lift 2x/wk, walk the dog, nothing yet">
+      <label class="q">Where will you train?</label>
+      <div class="checks">
+        <label class="pill"><input type="checkbox" name="place" value="Full gym"><span>Full gym</span></label>
+        <label class="pill"><input type="checkbox" name="place" value="Home basics"><span>Home basics</span></label>
+        <label class="pill"><input type="checkbox" name="place" value="Bodyweight only"><span>Bodyweight only</span></label>
+        <label class="pill"><input type="checkbox" name="place" value="Outdoors"><span>Outdoors</span></label>
+      </div>
+      <div class="row2">
+        <div><label class="q" for="days">Realistic days per week?</label><select id="days" name="days"><option value="">Select…</option><option>1–2</option><option>3–4</option><option>5–6</option><option>Every day</option></select></div>
+        <div><label class="q" for="when">Preferred time?</label><select id="when" name="when"><option value="">Select…</option><option>Morning</option><option>Midday</option><option>Evening</option><option>Varies</option></select></div>
+      </div>
+      <label class="q" for="movelove">Anything you love or can't stand doing? <span class="opt">(optional)</span></label>
+      <input type="text" id="movelove" name="movelove" placeholder="e.g. love lifting, hate running">
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 6 FOOD -->
+    <section class="panel" data-step="6">
+      <p class="eyebrow">Food life</p>
+      <h1>Let's talk about how you actually eat.</h1>
+      <label class="q" for="typicalday">Walk me through a normal day of eating.</label>
+      <textarea id="typicalday" name="typicalday" placeholder="Morning to night, roughly…"></textarea>
+      <label class="q" for="foodlove">Foods you love / won't give up? <span class="opt">(optional)</span></label>
+      <input type="text" id="foodlove" name="foodlove" placeholder="e.g. coffee, steak, pasta">
+      <label class="q" for="restrict">Allergies or restrictions? <span class="opt">(optional)</span></label>
+      <input type="text" id="restrict" name="restrict" placeholder="e.g. dairy, none">
+      <div class="row2">
+        <div><label class="q" for="cook">Cooking situation?</label><select id="cook" name="cook"><option value="">Select…</option><option>I cook most meals</option><option>Some cooking</option><option>Mostly eat out / takeout</option></select></div>
+        <div><label class="q" for="alcohol">Alcohol?</label><select id="alcohol" name="alcohol"><option value="">Select…</option><option>None</option><option>Occasionally</option><option>Weekly</option><option>Most days</option></select></div>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 7 RECOVERY -->
+    <section class="panel" data-step="7">
+      <p class="eyebrow">Recovery &amp; lifestyle</p>
+      <h1>Sleep, stress, and how you live.</h1>
+      <div class="row2">
+        <div><label class="q" for="sleep">Typical sleep?</label><select id="sleep" name="sleep"><option value="">Select…</option><option>Under 5 hrs</option><option>5–6 hrs</option><option>7–8 hrs</option><option>8+ hrs</option></select></div>
+        <div><label class="q" for="stress">Stress level?</label><select id="stress" name="stress"><option value="">Select…</option><option>Low</option><option>Moderate</option><option>High</option><option>Through the roof</option></select></div>
+      </div>
+      <label class="q" for="schedule">Work / life schedule — anything that shapes your days? <span class="opt">(optional)</span></label>
+      <input type="text" id="schedule" name="schedule" placeholder="e.g. shift work, travel a lot, kids">
+      <label class="q">Do you wear anything?</label>
+      <div class="checks">
+        <label class="pill"><input type="checkbox" name="wearable" value="Oura"><span>Oura</span></label>
+        <label class="pill"><input type="checkbox" name="wearable" value="Apple Watch"><span>Apple Watch</span></label>
+        <label class="pill"><input type="checkbox" name="wearable" value="Whoop"><span>Whoop</span></label>
+        <label class="pill"><input type="checkbox" name="wearable" value="Garmin"><span>Garmin</span></label>
+        <label class="pill"><input type="checkbox" name="wearable" value="None"><span>None yet</span></label>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 8 DATA (Better / Way Better only) -->
+    <section class="panel" data-step="8">
+      <p class="eyebrow">Data on hand</p>
+      <h1>The more you bring, the sharper we get.</h1>
+      <p class="lede">Only what you have — nothing's required. Each piece raises your precision.</p>
+      <label class="q">Do you have any of these already?</label>
+      <div class="checks">
+        <label class="pill"><input type="checkbox" name="have" value="Recent bloodwork"><span>Recent bloodwork</span></label>
+        <label class="pill"><input type="checkbox" name="have" value="DEXA / InBody"><span>DEXA / InBody</span></label>
+        <label class="pill"><input type="checkbox" name="have" value="VO2 / metabolic test"><span>VO₂ / metabolic test</span></label>
+      </div>
+      <label class="q">Willing to add any of these?</label>
+      <div class="checks">
+        <label class="pill"><input type="checkbox" name="willing" value="A wearable"><span>Wear a wearable</span></label>
+        <label class="pill"><input type="checkbox" name="willing" value="Basic labs"><span>Get basic labs</span></label>
+        <label class="pill" id="fullTestPill" style="display:none"><input type="checkbox" name="willing" value="Full testing (DEXA/VO2/RMR)"><span>Full testing (DEXA/VO₂/RMR)</span></label>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 9 COACHING -->
+    <section class="panel" data-step="9">
+      <p class="eyebrow">How you like to be coached</p>
+      <h1>So your coach shows up the way you need.</h1>
+      <label class="q">Direct and pushy, or steady and encouraging?</label>
+      <div class="checks">
+        <label class="pill"><input type="radio" name="style" value="Direct &amp; pushy"><span>Direct &amp; pushy</span></label>
+        <label class="pill"><input type="radio" name="style" value="Balanced"><span>A bit of both</span></label>
+        <label class="pill"><input type="radio" name="style" value="Steady &amp; encouraging"><span>Steady &amp; encouraging</span></label>
+      </div>
+      <div class="row2">
+        <div><label class="q" for="amtime">Morning nudge around?</label><input type="text" id="amtime" name="amtime" placeholder="e.g. 7:00 AM"></div>
+        <div><label class="q" for="pmtime">Evening check-in around?</label><input type="text" id="pmtime" name="pmtime" placeholder="e.g. 8:30 PM"></div>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next>Continue →</button></div>
+    </section>
+
+    <!-- 10 CAMERA -->
+    <section class="panel" data-step="10">
+      <p class="eyebrow">Your story</p>
+      <h1>Want to document the journey?</h1>
+      <p class="lede">This is a family transformation — real people, real progress. Progress photos and short videos become your record and, if you're up for it, part of the story we share. Totally your call, and you control what's public.</p>
+      <label class="q">What are you comfortable with?</label>
+      <div class="checks">
+        <label class="pill"><input type="radio" name="media" value="All in — share publicly"><span>All in — happy to share</span></label>
+        <label class="pill"><input type="radio" name="media" value="Capture, keep private"><span>Capture, keep it private</span></label>
+        <label class="pill"><input type="radio" name="media" value="Decide later"><span>I'll decide later</span></label>
+      </div>
+      <div class="nav"><button class="btn btn-ghost" data-back>← Back</button><span class="spacer"></span><button class="btn btn-primary" data-next id="toReview">See my Blueprint →</button></div>
+    </section>
+
+    <!-- 11 REVIEW -->
+    <section class="panel" data-step="11">
+      <p class="eyebrow">Your starting blueprint</p>
+      <h1 id="reviewH1">Here's where you begin.</h1>
+      <div class="score">
+        <div class="meter"><i id="meterFill"></i></div>
+        <div class="scoreN"><span id="scoreN">0</span><span style="font-size:20px;color:var(--ink-soft)">%</span></div>
+        <div class="scoreL" id="scoreTier">Precision score</div>
+      </div>
+      <p class="lede" id="scoreLine"></p>
+      <div class="est" id="estBlock">
+        <p class="esttitle">Estimated starting plan <span id="estBy">· by formula</span></p>
+        <div class="estrow">
+          <div class="estcell"><b id="estCal">—</b><span>calories / day</span></div>
+          <div class="estcell"><b id="estTDEE">—</b><span>you burn / day</span></div>
+        </div>
+        <div class="macbar" id="macbar" aria-hidden="true"></div>
+        <div class="estrow">
+          <div class="estcell"><b id="estP">—</b><span>protein</span></div>
+          <div class="estcell"><b id="estF">—</b><span>fat</span></div>
+          <div class="estcell"><b id="estC">—</b><span>carbs</span></div>
+        </div>
+        <p class="estnote" id="estNote"></p>
+      </div>
+      <div class="summary"><dl id="sumDL"></dl></div>
+      <div class="flag" id="reviewFlag"><b>Medical check first.</b> Because of what you flagged, your coach will confirm a quick doctor's OK before your training/nutrition plan goes live.</div>
+      <div class="next"><h3>What happens next</h3><ul id="nextList"></ul></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="copyBtn">Copy my answers</button>
+        <button class="btn btn-ghost" id="dlBtn">Download</button>
+        <button class="btn btn-ghost" id="restartBtn">Start over</button>
+      </div>
+      <p class="foot">Powered by <b>Apex</b> · your personal transformation OS</p>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied — send it to your coach</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  // theme toggle
+  document.getElementById('theme').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    if(!cur){ cur = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'; }
+    root.setAttribute('data-theme', cur === 'dark' ? 'light':'dark');
+  });
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var fill = document.getElementById('fill');
+  var stepno = document.getElementById('stepno');
+  var state = { tier: '' };
+  var pos = 0; // index into visibleSteps
+  var titles = ['Getting started','Your depth','The basics','Your goal','Health & safety','Training','Food','Recovery','Data on hand','Coaching style','Your story','Your blueprint'];
+
+  function visibleSteps(){
+    // step 8 (data) only for Better / Way Better
+    return panels.map(function(p){ return +p.dataset.step; }).filter(function(s){
+      if(s===8) return state.tier==='Better' || state.tier==='Way Better';
+      return true;
+    });
+  }
+  function show(){
+    var steps = visibleSteps();
+    var stepId = steps[pos];
+    panels.forEach(function(p){ p.classList.toggle('active', +p.dataset.step===stepId); });
+    fill.style.width = ((pos)/(steps.length-1)*100) + '%';
+    stepno.textContent = 'Step ' + (pos+1) + ' of ' + steps.length + ' · ' + titles[stepId];
+    // personalize name tokens
+    var nm = (document.getElementById('name').value||'').trim();
+    document.querySelectorAll('.nm').forEach(function(el){ el.textContent = nm || 'friend'; });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function go(dir){
+    var steps = visibleSteps();
+    if(dir>0 && pos<steps.length-1) pos++;
+    else if(dir<0 && pos>0) pos--;
+    if(steps[pos]===11) buildReview();
+    show();
+  }
+  document.querySelectorAll('[data-next]').forEach(function(b){ b.addEventListener('click', function(){ go(1); }); });
+  document.querySelectorAll('[data-back]').forEach(function(b){ b.addEventListener('click', function(){ go(-1); }); });
+
+  // tier selection
+  document.querySelectorAll('.choice').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.querySelectorAll('.choice').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+      c.setAttribute('aria-pressed','true');
+      state.tier = c.dataset.tier;
+      document.getElementById('tierNext').disabled = false;
+      document.getElementById('fullTestPill').style.display = state.tier==='Way Better' ? '' : 'none';
+    });
+  });
+
+  // safety gate
+  var gateFlag = document.getElementById('gateFlag');
+  document.querySelectorAll('[data-gate]').forEach(function(g){
+    g.addEventListener('change', function(){
+      var any = Array.prototype.some.call(document.querySelectorAll('[data-gate]'), function(x){ return x.checked; });
+      gateFlag.classList.toggle('show', any);
+    });
+  });
+
+  function vals(name){
+    return Array.prototype.slice.call(document.querySelectorAll('[name="'+name+'"]'))
+      .filter(function(i){ return i.checked; }).map(function(i){ return i.value; });
+  }
+  function val(id){ var e=document.getElementById(id); return e? (e.value||'').trim() : ''; }
+
+  function fmtHt(){ var f=val('ht_ft'), i=val('ht_in'); if(!f && !i) return ''; return (f||0)+"'"+(i||0)+'"'; }
+  function fmtWt(){ var w=val('wt_lb'); return w? w+' lb' : ''; }
+
+  // Metabolic + macro estimate — Mifflin-St Jeor (or Katch-McArdle if body-fat given)
+  function macros(){
+    var sex=val('sex'), age=+val('age'), ft=+val('ht_ft'), inch=+val('ht_in'), lb=+val('wt_lb'), act=val('activity'), bf=+val('bodyfat');
+    if(!sex || !(age>0) || !(ft>0||inch>0) || !(lb>0) || !act) return null;
+    var cm=(ft*12+inch)*2.54, kg=lb*0.453592, bmr, method;
+    if(bf>0 && bf<60){ bmr = 370 + 21.6*(kg*(1-bf/100)); method='Katch-McArdle'; }
+    else { bmr = (sex==='Female') ? (10*kg + 6.25*cm - 5*age - 161) : (10*kg + 6.25*cm - 5*age + 5); method='Mifflin-St Jeor'; }
+    var mult = {'Sedentary':1.2,'Lightly active':1.375,'Moderately active':1.55,'Very active':1.725,'Athlete':1.9}[act] || 1.375;
+    var tdee = bmr*mult;
+    var goal = val('goal');
+    var adj = {'Lose fat':-0.20,'Look better / body confidence':-0.15,'More energy & feel better':0,'Longevity & health markers':0,'Get stronger':0.05,'Athletic performance':0.05,'Build muscle':0.10}[goal] || 0;
+    var cal = tdee*(1+adj);
+    var pPerLb = (['Build muscle','Lose fat','Get stronger','Look better / body confidence','Athletic performance'].indexOf(goal)>=0) ? 1.0 : 0.8;
+    var protein = Math.round(lb*pPerLb);
+    var fat = Math.round(cal*0.27/9);
+    var carbs = Math.max(0, Math.round((cal - protein*4 - fat*9)/4));
+    var r10 = function(n){ return Math.round(n/10)*10; };
+    return { bmr:Math.round(bmr), tdee:r10(tdee), cal:r10(cal), protein:protein, fat:fat, carbs:carbs, method:method, deficit: r10(tdee)-r10(cal) };
+  }
+
+  function computeScore(){
+    var base = { 'Good':55, 'Better':70, 'Way Better':78 }[state.tier] || 55;
+    var have = vals('have'), willing = vals('willing'), wear = vals('wearable');
+    var s = base;
+    if(have.indexOf('Recent bloodwork')>=0) s+=8;
+    if(have.indexOf('DEXA / InBody')>=0) s+=7;
+    if(have.indexOf('VO2 / metabolic test')>=0) s+=6;
+    if(wear.length && wear.indexOf('None')<0) s+=6;
+    if(willing.indexOf('Full testing (DEXA/VO2/RMR)')>=0) s+=6;
+    else if(willing.indexOf('Basic labs')>=0) s+=4;
+    return Math.min(100, s);
+  }
+
+  function paintEstimate(){
+    var m = macros();
+    var note = document.getElementById('estNote');
+    var cells = ['estCal','estTDEE','estP','estF','estC'];
+    if(!m){
+      cells.forEach(function(id){ document.getElementById(id).textContent='—'; });
+      document.getElementById('macbar').innerHTML='';
+      document.getElementById('estBy').textContent = '';
+      note.textContent = 'Add your age, sex, height, weight and activity level in “The basics” and your estimate appears here — no testing needed.';
+      return;
+    }
+    document.getElementById('estCal').textContent = m.cal.toLocaleString();
+    document.getElementById('estTDEE').textContent = m.tdee.toLocaleString();
+    document.getElementById('estP').textContent = m.protein + 'g';
+    document.getElementById('estF').textContent = m.fat + 'g';
+    document.getElementById('estC').textContent = m.carbs + 'g';
+    document.getElementById('estBy').textContent = '· by formula (' + m.method + ')';
+    var pc=m.protein*4, fc=m.fat*9, cc=m.carbs*4, tot=pc+fc+cc||1;
+    document.getElementById('macbar').innerHTML =
+      '<i style="width:'+(pc/tot*100)+'%;background:var(--green)"></i>'+
+      '<i style="width:'+(fc/tot*100)+'%;background:var(--gold)"></i>'+
+      '<i style="width:'+(cc/tot*100)+'%;background:#b9a98f"></i>';
+    var dline = m.deficit>0 ? ('a ~'+m.deficit+' cal/day deficit for fat loss') : (m.deficit<0 ? ('a ~'+Math.abs(m.deficit)+' cal/day surplus to build') : 'right around maintenance');
+    note.innerHTML = 'Estimated from your age, sex, height, weight and activity — that’s '+dline+'. This is a solid starting point; a <b>DEXA + RMR test makes it exact</b> (the jump from Good to Way Better).';
+  }
+
+  function buildReview(){
+    var nm = val('name') || 'friend';
+    document.getElementById('reviewH1').textContent = 'Here’s where you begin, ' + nm + '.';
+    paintEstimate();
+    var score = computeScore();
+    document.getElementById('scoreN').textContent = score;
+    setTimeout(function(){ document.getElementById('meterFill').style.width = score+'%'; }, 60);
+    var label = score>=85?'Way Better precision':score>=70?'Better precision':'Good — solid start';
+    document.getElementById('scoreTier').textContent = label;
+    // score line — what raises it
+    var up = [];
+    var have = vals('have'), wear = vals('wearable'), willing = vals('willing');
+    if(!(wear.length && wear.indexOf('None')<0)) up.push('connect a wearable (+6%)');
+    if(have.indexOf('Recent bloodwork')<0) up.push('add recent labs (+8%)');
+    if(have.indexOf('DEXA / InBody')<0) up.push('a DEXA body scan (+7%)');
+    document.getElementById('scoreLine').textContent = score>=90 ? 'About as precise as it gets. Your plan will be dialed in tight.' :
+      'Your plan starts strong today. Want it sharper? ' + (up.length? up.slice(0,2).join(', and ') + '.' : 'You’re nearly maxed out.');
+
+    // summary
+    var rows = [
+      ['Depth', state.tier || '—'],
+      ['Goal', val('goal') || '—'],
+      ['Your why', val('why') || '—'],
+      ['Snapshot', [val('age')&&val('age')+' yrs', val('sex'), fmtHt(), fmtWt(), val('activity')].filter(Boolean).join(' · ') || '—'],
+      ['Training', [ (vals('place').join(', ')), val('days')&&val('days')+' days/wk', val('when') ].filter(Boolean).join(' · ') || '—'],
+      ['Nutrition', [val('cook'), val('alcohol')&&('alcohol: '+val('alcohol'))].filter(Boolean).join(' · ') || '—'],
+      ['Recovery', [val('sleep')&&('sleep '+val('sleep')), val('stress')&&('stress '+val('stress')), (vals('wearable').join(', '))].filter(Boolean).join(' · ') || '—'],
+      ['Coaching', [ (vals('style')[0]||''), val('amtime')&&('AM '+val('amtime')), val('pmtime')&&('PM '+val('pmtime')) ].filter(Boolean).join(' · ') || '—'],
+      ['Story', (vals('media')[0]||'—')]
+    ];
+    var flags = vals('safety').filter(function(x){ return x!=='None of these' && x!=='Diabetes'; });
+    document.getElementById('sumDL').innerHTML = rows.map(function(r){
+      return '<div class="r"><dt>'+r[0]+'</dt><dd>'+escapeHtml(r[1])+'</dd></div>';
+    }).join('');
+    document.getElementById('reviewFlag').classList.toggle('show', flags.length>0);
+
+    // next steps
+    var next = [];
+    if(flags.length) next.push('Your coach confirms a quick doctor’s OK (you flagged: '+flags.join(', ')+').');
+    if(state.tier==='Way Better'){
+      next.push('Book your baseline: DEXA + VO₂ + RMR, plus refreshed labs.');
+      next.push('Your full-precision plan generates once results are in.');
+    } else if(state.tier==='Better'){
+      next.push('Connect a wearable and grab basic labs when you can.');
+      next.push('Your personalized plan lands in your first coaching message.');
+    } else {
+      next.push('You’re ready to start today — your Day-1 plan lands in your first coaching message.');
+      next.push('Level up to Better anytime by adding a wearable or labs.');
+    }
+    next.push('You’ll get a daily check-in and your own progress dashboard.');
+    document.getElementById('nextList').innerHTML = next.map(function(n){ return '<li>'+escapeHtml(n)+'</li>'; }).join('');
+  }
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
+
+  function buildText(){
+    var L = [];
+    L.push('APEX — INTAKE SUMMARY');
+    L.push('Name: '+(val('name')||'—'));
+    L.push('Depth / tier: '+(state.tier||'—'));
+    L.push('');
+    L.push('GOAL: '+(val('goal')||'—'));
+    L.push('Why now: '+(val('why')||'—'));
+    L.push('90-day vision: '+(val('vision')||'—'));
+    L.push('');
+    L.push('BASICS: '+[val('age')&&val('age')+' yrs',val('sex'),fmtHt(),fmtWt(),val('activity'),val('bodyfat')&&(val('bodyfat')+'% bf'),val('city')].filter(Boolean).join(' · '));
+    L.push('SAFETY flags: '+(vals('safety').join(', ')||'none'));
+    L.push('Injuries/surgeries: '+(val('injuries')||'—'));
+    L.push('Meds/supplements: '+(val('meds')||'—'));
+    L.push('');
+    L.push('TRAINING: now = '+(val('activity')||'—')+'; place = '+(vals('place').join(', ')||'—')+'; '+(val('days')||'—')+' days/wk; '+(val('when')||'—')+'; love/hate: '+(val('movelove')||'—'));
+    L.push('NUTRITION: typical day = '+(val('typicalday')||'—')+'; loves = '+(val('foodlove')||'—')+'; restrictions = '+(val('restrict')||'—')+'; cooking = '+(val('cook')||'—')+'; alcohol = '+(val('alcohol')||'—'));
+    L.push('RECOVERY: sleep '+(val('sleep')||'—')+'; stress '+(val('stress')||'—')+'; schedule '+(val('schedule')||'—')+'; wearable '+(vals('wearable').join(', ')||'—'));
+    L.push('DATA on hand: '+(vals('have').join(', ')||'none')+'; willing to add: '+(vals('willing').join(', ')||'none'));
+    L.push('COACHING: '+(vals('style')[0]||'—')+'; AM '+(val('amtime')||'—')+'; PM '+(val('pmtime')||'—'));
+    L.push('STORY / media: '+(vals('media')[0]||'—'));
+    L.push('');
+    L.push('Precision score: '+computeScore()+'%');
+    var m = macros();
+    if(m){
+      L.push('');
+      L.push('ESTIMATED STARTING PLAN (formula — '+m.method+'):');
+      L.push('  RMR ~'+m.bmr+' cal · TDEE ~'+m.tdee+' cal · Target ~'+m.cal+' cal/day');
+      L.push('  Protein '+m.protein+'g · Fat '+m.fat+'g · Carbs '+m.carbs+'g');
+      L.push('  (DEXA + RMR test makes these exact.)');
+    }
+    return L.join('\n');
+  }
+
+  var toast = document.getElementById('toast');
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var t = buildText();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(showToast, fallbackCopy.bind(null,t));
+    } else fallbackCopy(t);
+  });
+  function fallbackCopy(t){ var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); showToast(); }
+  function showToast(){ toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2600); }
+  document.getElementById('dlBtn').addEventListener('click', function(){
+    var blob = new Blob([buildText()], {type:'text/plain'});
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'way-better-intake-'+((val('name')||'me').toLowerCase().replace(/\s+/g,'-'))+'.txt';
+    a.click(); URL.revokeObjectURL(a.href);
+  });
+  document.getElementById('restartBtn').addEventListener('click', function(){
+    document.querySelectorAll('input,select,textarea').forEach(function(f){ if(f.type==='checkbox'||f.type==='radio') f.checked=false; else f.value=''; });
+    document.querySelectorAll('.choice').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+    document.getElementById('tierNext').disabled=true; state.tier=''; gateFlag.classList.remove('show'); pos=0; show();
+  });
+
+  show();
+})();
+</script>
