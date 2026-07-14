@@ -120,7 +120,34 @@
     <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Fasted, after the bathroom.</div></div>
 
     <h2>Water</h2>
-    <div class="card"><div class="row" style="justify-content:space-between"><span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 12</span></span><div class="row"><button class="round" onclick="water(-1)">−</button><button class="round" onclick="water(1)">+</button></div></div><div class="water" id="water-drops"></div></div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;align-items:flex-end">
+        <span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 120 oz</span></span>
+        <div class="row" style="gap:6px">
+          <button class="round" onclick="water(-8)">−</button>
+          <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(8)">+8</button>
+          <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(16)">+16</button>
+          <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(24)">+24</button>
+        </div>
+      </div>
+      <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="water-bar"></i></div></div>
+      <div class="note" style="margin-bottom:0">Target 120 oz (~1 gallon). +8 glass · +16 bottle · +24 big bottle.</div>
+    </div>
+
+    <h2>Steps</h2>
+    <div class="card">
+      <div class="row"><input type="number" id="steps" inputmode="numeric" placeholder="steps today"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveSteps()">Log</button></div>
+      <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="steps-bar"></i></div><b id="steps-pct">0%</b></div>
+      <div class="note" style="margin-bottom:0">Target 10,000/day. Auto-syncs from your watch once wearables are connected.</div>
+    </div>
+
+    <h2>Cardio</h2>
+    <div class="card">
+      <select id="cardio-type"><option>Zone 2 walk</option><option>Bike</option><option>Incline treadmill</option><option>Run</option><option>Rower / elliptical</option><option>Sprints (Zone 4–5)</option><option>Other</option></select>
+      <div class="row" style="margin-top:10px;gap:10px"><div style="flex:1"><label>minutes</label><input type="number" id="cardio-min" inputmode="numeric" placeholder="min"></div><div style="flex:1"><label>distance <span class="m">(opt)</span></label><input type="number" id="cardio-dist" inputmode="decimal" placeholder="mi"></div></div>
+      <button class="btn ghost" style="margin-top:12px" onclick="saveCardio()">Log cardio ✓</button>
+      <div class="wlist" id="cardio-list" style="margin-top:10px"></div>
+    </div>
 
     <h2>Food &amp; macros hit</h2>
     <div class="card">
@@ -181,6 +208,33 @@
     <div style="height:18px"></div>
   </div>
 
+  <!-- FUEL -->
+  <div class="screen" id="s-fuel">
+    <div class="date">FUEL · MEAL IDEAS &amp; PREP</div>
+    <h1>Hit 3,230 cal · 150g protein</h1>
+    <p class="note">A plug-and-play day. Mix and match — each block lists rough macros so you can swap freely and still land your targets. Log what you actually eat on the Today tab.</p>
+
+    <h2>A full day that hits your macros</h2>
+    <div class="plan">
+      <details open><summary>Breakfast · ~640 cal / 38P</summary><table><tr><td>3 eggs + 1 cup oats + banana + honey</td><td class="s">38P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: Greek yogurt + granola + berries + scoop whey</td><td class="s">40P</td></tr></table></details>
+      <details><summary>Lunch (post-workout, biggest) · ~770 cal / 58P</summary><table><tr><td>8 oz chicken + 1.5 cups rice + veg + olive oil</td><td class="s">58P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: lean beef burrito bowl (rice, beans, cheese)</td><td class="s">52P</td></tr></table></details>
+      <details><summary>Dinner (family meal) · ~700 cal / 45P</summary><table><tr><td>2 palms protein + 2–3 cupped carbs + veg</td><td class="s">45P</td></tr><tr><td class="m" style="font-size:12.5px">Salmon/steak/chicken — eat the family dinner, bigger portion</td><td class="s">—</td></tr></table></details>
+      <details><summary>Snacks &amp; fill · ~1,120 cal / 80P</summary><table><tr><td>Protein Ninja Creami (whey + milk + PB)</td><td class="s">40P</td></tr><tr><td>Greek yogurt + granola</td><td class="s">25P</td></tr><tr><td>Whey shake on big-appetite days</td><td class="s">25P</td></tr></table></details>
+    </div>
+    <div class="callout"><b>Rule of thumb:</b> protein first at every meal. If the scale isn't trending +¼–½ lb/week, add one snack block. If it's climbing too fast, drop one.</div>
+
+    <h2>Grocery staples to prep ahead</h2>
+    <ul class="c">
+      <li><b>Protein:</b> <span class="m">chicken breast, lean ground beef/turkey, eggs, Greek yogurt, whey, salmon.</span></li>
+      <li><b>Carbs:</b> <span class="m">rice, oats, potatoes, bananas, berries, honey, granola.</span></li>
+      <li><b>Fats:</b> <span class="m">olive oil, peanut butter, avocado, nuts, whole eggs.</span></li>
+      <li><b>Prep once:</b> <span class="m">batch-cook 2–3 lb chicken + a big pot of rice on Sunday — that's lunch handled all week.</span></li>
+    </ul>
+
+    <div class="callout" style="background:var(--ground)"><b>Coming soon:</b> a searchable food tracker — type or scan a food and it auto-fills the macros into your Today log. For now, use the numbers above and enter your daily totals on the Today tab.</div>
+    <div style="height:18px"></div>
+  </div>
+
   <!-- PROGRESS -->
   <div class="screen" id="s-prog">
     <div class="date">PROGRESS</div>
@@ -206,6 +260,7 @@
   <div class="nav">
     <button class="on" data-s="today" onclick="go('today')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9" stroke-linecap="round"/></svg>Today</button>
     <button data-s="plan" onclick="go('plan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg>Program</button>
+    <button data-s="fuel" onclick="go('fuel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v7a3 3 0 006 0V3M8 3v18M18 3c-1.5 0-3 2-3 6s1.5 5 3 5v7"/></svg>Fuel</button>
     <button data-s="prog" onclick="go('prog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 15l4-4 4 3 8-8" stroke-linecap="round" stroke-linejoin="round"/></svg>Progress</button>
     <button data-s="photos" onclick="go('photos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>Photos</button>
   </div>
@@ -216,7 +271,7 @@
 (function(){
   var KEY='apex_alex_v2';
   var db=JSON.parse(localStorage.getItem(KEY)||'{}');
-  if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0;
+  if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0; if(!db.cardio)db.cardio=[];
   function save(){localStorage.setItem(KEY,JSON.stringify(db));}
   function tkey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   var TODAY=tkey();
@@ -226,11 +281,29 @@
 
   window.go=function(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s);});document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on',b.dataset.s===s);});window.scrollTo(0,0);if(s==='prog')drawSpark();};
 
-  var drops=document.getElementById('water-drops');
-  for(var i=0;i<12;i++){var d=document.createElement('div');d.className='drop';d.onclick=(function(n){return function(){day.water=n+1;save();paintWater();};})(i);drops.appendChild(d);}
-  function paintWater(){document.getElementById('water-n').textContent=day.water;[].forEach.call(drops.children,function(c,i){c.classList.toggle('full',i<day.water);});}
-  window.water=function(n){day.water=Math.max(0,Math.min(12,day.water+n));save();paintWater();};
+  var WGOAL=120;
+  if(day.water>0&&day.water<=12)day.water=day.water*8; // migrate old glass counts → oz
+  function paintWater(){var oz=day.water||0;document.getElementById('water-n').textContent=oz;document.getElementById('water-bar').style.width=Math.min(100,Math.round(oz/WGOAL*100))+'%';}
+  window.water=function(n){day.water=Math.max(0,(day.water||0)+n);save();paintWater();};
   paintWater();
+
+  var SGOAL=10000;
+  document.getElementById('steps').value=day.steps||'';
+  function paintSteps(){var s=+day.steps||0,p=Math.round(s/SGOAL*100);document.getElementById('steps-bar').style.width=Math.min(100,p)+'%';document.getElementById('steps-pct').textContent=p+'%';}
+  window.saveSteps=function(){day.steps=document.getElementById('steps').value;save();paintSteps();toast('Steps logged ✓');};
+  paintSteps();
+
+  window.saveCardio=function(){
+    var t=document.getElementById('cardio-type').value,m=document.getElementById('cardio-min').value,di=document.getElementById('cardio-dist').value;
+    if(!m&&!di){toast('Enter minutes');return;}
+    db.cardio.unshift({date:TODAY,type:t,min:m,dist:di});save();paintCardio();
+    document.getElementById('cardio-min').value='';document.getElementById('cardio-dist').value='';toast('Cardio logged ✓');
+  };
+  function paintCardio(){
+    var el=document.getElementById('cardio-list');if(!el)return;el.innerHTML='';
+    db.cardio.slice(0,6).forEach(function(c){var d=document.createElement('div');d.innerHTML='<span class="m">'+c.date+' · '+c.type+'</span><b>'+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':'')+'</b>';el.appendChild(d);});
+  }
+  paintCardio();
 
   var rc=document.getElementById('rating');
   for(var r=1;r<=5;r++){(function(v){var b=document.createElement('button');b.className='round';b.style.flex='1';b.textContent=v;b.onclick=function(){day.rating=v;save();paintRating();};rc.appendChild(b);})(r);}
@@ -329,7 +402,8 @@
     var L=['APEX — ALEX — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
     L.push('WEIGH-INS:');db.weights.forEach(function(x){L.push('  '+x.date+': '+x.w+' lb');});
     L.push('','WORKOUTS:');db.workouts.forEach(function(w){L.push('  '+w.date+' '+w.day+': '+w.sets.join(' · '));});
-    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+d.water+'/12 · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 3230 / 150P 97F 439C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
+    L.push('','CARDIO:');db.cardio.forEach(function(c){L.push('  '+c.date+': '+c.type+' '+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':''));});
+    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+(d.water||0)+' oz'+(d.steps?' · steps '+d.steps:'')+' · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 3230 / 150P 97F 439C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
     L.push('','Photos added: '+db.photos);
     var txt=L.join('\n');
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast('Copied — send to coach');},dl);}else dl();
