@@ -16,21 +16,17 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
   body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%;}
-  .app{max-width:520px;margin:0 auto;min-height:100vh;padding:0 0 88px;}
-  /* top bar */
+  .app{max-width:520px;margin:0 auto;min-height:100vh;padding:0 0 90px;}
   .top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 12px) 18px 12px;display:flex;align-items:center;justify-content:space-between;}
   .brand{display:flex;align-items:center;gap:8px;}
   .brand b{font-family:var(--mono);text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--copper);}
   .brand span{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);}
   .top .who{font-family:var(--mono);font-size:11px;color:var(--ink-soft);}
-  /* screens */
-  .screen{display:none;padding:18px 16px 0;}
-  .screen.on{display:block;animation:f .25s ease;}
-  @keyframes f{from{opacity:0;transform:translateY(6px);}to{opacity:1;}}
-  @media (prefers-reduced-motion:reduce){.screen.on{animation:none;}}
-  h1{font-size:24px;margin:2px 0 3px;letter-spacing:-.3px;}
-  .date{font-family:var(--mono);font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
-  h2{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--copper);margin:22px 0 8px;}
+  .screen{display:none;padding:16px 16px 0;}
+  .screen.on{display:block;}
+  h1{font-size:23px;margin:2px 0 3px;letter-spacing:-.3px;}
+  .date{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
+  h2{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--copper);margin:24px 0 8px;display:flex;align-items:center;gap:8px;}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0;}
   label{display:block;font-weight:600;font-size:14px;margin:0 0 6px;}
   input,textarea,select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--ground);border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;}
@@ -42,78 +38,84 @@
   .btn:active{transform:translateY(1px);}
   .btn.ghost{background:var(--ground);color:var(--ink);border:1.5px solid var(--line);box-shadow:none;}
   .round{width:52px;height:52px;flex:none;border-radius:14px;border:1.5px solid var(--line);background:var(--ground);font-size:24px;font-weight:700;color:var(--copper);cursor:pointer;}
-  .water{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
-  .drop{width:34px;height:44px;border-radius:0 0 16px 16px/0 0 20px 20px;border:2px solid var(--line);border-top-left-radius:50%;border-top-right-radius:50%;background:var(--ground);cursor:pointer;transition:.15s;}
+  .drop{width:30px;height:40px;border-radius:0 0 16px 16px/0 0 20px 20px;border:2px solid var(--line);border-top-left-radius:50%;border-top-right-radius:50%;background:var(--ground);cursor:pointer;}
   .drop.full{background:var(--copper);border-color:var(--copper);}
-  /* exercise log rows */
-  .ex{border-top:1px solid var(--line);padding:12px 0;}
+  .water{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+  /* macro bar */
+  .macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .mac{background:var(--tint);border-radius:12px;padding:11px 5px;text-align:center;}
+  .mac b{display:block;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .mac span{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);}
+  /* today workout */
+  .ex{border-top:1px solid var(--line);padding:13px 0;}
   .ex:first-child{border-top:none;}
-  .ex .name{font-weight:600;font-size:14.5px;margin-bottom:8px;}
+  .ex .name{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .ex .rx{font-family:var(--mono);font-size:11px;color:var(--copper-deep);background:var(--tint);padding:2px 7px;border-radius:6px;white-space:nowrap;}
   .ex .sets{display:flex;gap:8px;}
-  .ex .sets input{text-align:center;padding:10px 6px;}
+  .ex .sets input{text-align:center;padding:11px 6px;}
   .ex .lab{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);display:block;text-align:center;margin-bottom:3px;letter-spacing:.04em;}
-  /* program */
+  /* plan */
   details{border:1px solid var(--line);border-radius:12px;margin:8px 0;overflow:hidden;}
   summary{list-style:none;cursor:pointer;padding:13px 15px;font-weight:600;font-size:14.5px;background:var(--tint);display:flex;justify-content:space-between;}
   summary::-webkit-details-marker{display:none;}
   .plan table{width:100%;border-collapse:collapse;font-size:14px;}
   .plan td{padding:9px 15px;border-top:1px solid var(--line);}
   .plan td.s{color:var(--copper-deep);font-weight:600;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0;}
-  .num{background:var(--tint);border-radius:12px;padding:11px 6px;text-align:center;}
-  .num b{display:block;font-size:18px;font-weight:700;}
-  .num span{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);}
   ul.c{list-style:none;padding:0;margin:6px 0;}
   ul.c li{padding:8px 0 8px 26px;position:relative;border-top:1px solid var(--line);font-size:14px;}
   ul.c li:first-child{border-top:none;}
   ul.c li:before{content:"";position:absolute;left:0;top:11px;width:13px;height:13px;border:2px solid var(--copper);border-radius:4px;}
   .m{color:var(--ink-soft);}
-  /* progress */
+  .callout{background:var(--tint);border-radius:12px;padding:13px 15px;font-size:13px;margin:10px 0;}
+  .callout b{color:var(--copper-deep);}
   .wlist div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:14px;}
   .wlist div:first-child{border-top:none;}
   .wlist b{font-variant-numeric:tabular-nums;}
   .spark{height:60px;width:100%;}
-  /* photos */
   .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
   .thumbs img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid var(--line);}
   .filebtn{display:block;text-align:center;border:2px dashed var(--copper);border-radius:14px;padding:22px;color:var(--copper-deep);font-weight:600;cursor:pointer;background:var(--tint);}
   .filebtn input{display:none;}
   .note{font-size:12.5px;color:var(--ink-soft);margin:10px 0;}
-  /* bottom nav */
   .nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(env(safe-area-inset-bottom) + 6px);z-index:30;max-width:520px;margin:0 auto;}
   .nav button{flex:1;background:none;border:none;padding:8px 2px;cursor:pointer;color:var(--ink-soft);font-family:var(--sans);font-size:10.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;}
   .nav button svg{width:22px;height:22px;}
   .nav button.on{color:var(--copper);}
-  .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(16px);background:var(--good);color:#fff;padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:40;}
+  .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(16px);background:var(--good);color:#fff;padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:40;}
   .toast.show{opacity:1;transform:translateX(-50%);}
 </style>
 
 <div class="app">
   <div class="top">
     <div class="brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.4"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg><b>Apex</b><span>·&nbsp;Alex</span></div>
-    <div class="who" id="streak">Day 1</div>
+    <div class="who">Build muscle</div>
   </div>
 
   <!-- TODAY -->
   <div class="screen on" id="s-today">
     <div class="date" id="today-date">TODAY</div>
-    <h1>Log your day</h1>
+    <h1>Today's plan</h1>
 
-    <h2>Morning weigh-in</h2>
-    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note" id="weight-msg">Fasted, after the bathroom. Trend &gt; daily bounce.</div></div>
+    <h2>Your targets today</h2>
+    <div class="card"><div class="macros"><div class="mac"><b>3,230</b><span>cal</span></div><div class="mac"><b>150g</b><span>protein</span></div><div class="mac"><b>97g</b><span>fat</span></div><div class="mac"><b>439g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">Modest surplus for lean muscle. Scale should trend <b>+¼–½ lb/week.</b></div></div>
 
-    <h2>Water</h2>
-    <div class="card"><div class="row" style="justify-content:space-between"><span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 12 cups</span></span><div class="row"><button class="round" onclick="water(-1)">−</button><button class="round" onclick="water(1)">+</button></div></div><div class="water" id="water-drops"></div></div>
-
-    <h2>Today's workout</h2>
+    <h2>Today's workout — log as you go</h2>
     <div class="card">
-      <select id="wk-day" onchange="renderWorkout()" style="margin-bottom:10px"></select>
+      <label>Which day are you training?</label>
+      <select id="wk-day" onchange="renderWorkout()" style="margin-bottom:6px"></select>
+      <div class="note" style="margin-top:4px" id="wk-hint"></div>
       <div id="wk-log"></div>
-      <button class="btn ghost" style="margin-top:10px" onclick="saveWorkout()">Save workout</button>
+      <button class="btn ghost" style="margin-top:12px" onclick="saveWorkout()">Save workout ✓</button>
     </div>
 
+    <h2>Morning weigh-in</h2>
+    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Fasted, after the bathroom.</div></div>
+
+    <h2>Water</h2>
+    <div class="card"><div class="row" style="justify-content:space-between"><span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 12</span></span><div class="row"><button class="round" onclick="water(-1)">−</button><button class="round" onclick="water(1)">+</button></div></div><div class="water" id="water-drops"></div></div>
+
     <h2>Food</h2>
-    <div class="card"><textarea id="food" placeholder="What did you eat? Rough it in — protein first."></textarea><div class="note">Target: ~3,230 cal · 150g protein.</div></div>
+    <div class="card"><textarea id="food" placeholder="What did you eat? Protein first."></textarea></div>
 
     <h2>Journal · Reading · Day in review</h2>
     <div class="card">
@@ -124,29 +126,40 @@
     </div>
 
     <button class="btn" onclick="saveDay()">Save today ✓</button>
-    <div style="height:14px"></div>
+    <div style="height:12px"></div>
     <button class="btn ghost" onclick="exportAll()">Send my logs to coach</button>
     <div style="height:18px"></div>
   </div>
 
   <!-- PLAN -->
   <div class="screen" id="s-plan">
-    <div class="date">YOUR PROGRAM · WEEK 1</div>
-    <h1>Build muscle</h1>
-    <div class="nums"><div class="num"><b>3,230</b><span>cal</span></div><div class="num"><b>150g</b><span>protein</span></div><div class="num"><b>97/439</b><span>fat/carb</span></div><div class="num"><b>+¼–½</b><span>lb/wk</span></div></div>
+    <div class="date">YOUR FULL PROGRAM · WEEK 1</div>
+    <h1>Build muscle — lean bulk</h1>
+    <p class="note">You're 19 and lean — this is the best natural muscle-building window of your life. Eat in a controlled surplus, lift heavy and progressively, sleep, document everything.</p>
+
+    <h2>Daily macro targets</h2>
+    <div class="card"><div class="macros"><div class="mac"><b>3,230</b><span>cal</span></div><div class="mac"><b>150g</b><span>protein</span></div><div class="mac"><b>97g</b><span>fat</span></div><div class="mac"><b>439g</b><span>carbs</span></div></div></div>
+
     <h2>Training — Push / Pull / Legs ×2</h2>
     <div class="plan">
-      <details open><summary>Push A/B <span class="m">chest·shoulders·tri</span></summary><table><tr><td>Bench Press</td><td class="s">4×6–8</td></tr><tr><td>Incline DB Press</td><td class="s">3×8–12</td></tr><tr><td>Shoulder Press</td><td class="s">3×8–12</td></tr><tr><td>Lateral Raise</td><td class="s">3×12–15</td></tr><tr><td>Triceps Pushdown</td><td class="s">3×10–15</td></tr></table></details>
-      <details><summary>Pull A/B <span class="m">back·biceps</span></summary><table><tr><td>Pull-ups / Pulldown</td><td class="s">4×6–10</td></tr><tr><td>Barbell Row</td><td class="s">3×8–10</td></tr><tr><td>Chest-Supported Row</td><td class="s">3×10–12</td></tr><tr><td>Face Pulls</td><td class="s">3×15</td></tr><tr><td>Curls</td><td class="s">3×8–12</td></tr></table></details>
-      <details><summary>Legs A/B <span class="m">quads·hams·calves</span></summary><table><tr><td>Squat</td><td class="s">4×6–8</td></tr><tr><td>Romanian Deadlift</td><td class="s">3×8–10</td></tr><tr><td>Leg Press</td><td class="s">3×12–15</td></tr><tr><td>Leg Curl</td><td class="s">3×10–12</td></tr><tr><td>Calf Raise</td><td class="s">4×12–15</td></tr></table></details>
+      <details open><summary>Push A · chest·shoulders·tri</summary><table><tr><td>Barbell Bench</td><td class="s">4×6–8</td></tr><tr><td>Incline DB Press</td><td class="s">3×8–12</td></tr><tr><td>Seated DB Shoulder Press</td><td class="s">3×8–12</td></tr><tr><td>Cable Lateral Raise</td><td class="s">3×12–15</td></tr><tr><td>Triceps Pushdown</td><td class="s">3×10–15</td></tr><tr><td>Overhead Triceps Ext.</td><td class="s">2×12–15</td></tr></table></details>
+      <details><summary>Pull A · back·biceps</summary><table><tr><td>Pull-ups / Lat Pulldown</td><td class="s">4×6–10</td></tr><tr><td>Barbell Row</td><td class="s">3×8–10</td></tr><tr><td>Chest-Supported Row</td><td class="s">3×10–12</td></tr><tr><td>Face Pulls</td><td class="s">3×15</td></tr><tr><td>EZ-Bar Curl</td><td class="s">3×8–12</td></tr><tr><td>Incline DB Curl</td><td class="s">2×12–15</td></tr></table></details>
+      <details><summary>Legs A · quads·hams·calves</summary><table><tr><td>Back Squat</td><td class="s">4×6–8</td></tr><tr><td>Romanian Deadlift</td><td class="s">3×8–10</td></tr><tr><td>Leg Press</td><td class="s">3×12–15</td></tr><tr><td>Seated Leg Curl</td><td class="s">3×10–12</td></tr><tr><td>Standing Calf Raise</td><td class="s">4×12–15</td></tr><tr><td>Hanging Leg Raise</td><td class="s">3×10–15</td></tr></table></details>
+      <details><summary>Push B / Pull B / Legs B</summary><div style="padding:12px 15px;font-size:13.5px" class="m">Days 4–6 mirror A with variations: Push B leads with Overhead Press + Dips; Pull B leads with Lat Pulldown + One-Arm Rows; Legs B leads with Hack Squat + Bulgarian Split Squats.</div></details>
     </div>
-    <p class="note">Progress: hit the top of the range clean → add a rep or 2.5–5 lb next time.</p>
-    <h2>Cardio</h2>
-    <ul class="c"><li><b>Zone 2</b> <span class="m">2–3× / wk · 20–30 min easy (walk/bike). Heart + recovery.</span></li><li><b>Zone 4–5 (optional)</b> <span class="m">1× · 6 × 30-sec bike sprints.</span></li></ul>
-    <h2>Meals (dinner = family menu)</h2>
-    <ul class="c"><li><b>Pre-workout:</b> <span class="m">eggs + oats + banana.</span></li><li><b>Post-workout lunch (biggest):</b> <span class="m">chicken + rice + veg.</span></li><li><b>Evening:</b> <span class="m">protein Creami.</span></li><li><b>Fill:</b> <span class="m">Greek yogurt + granola.</span></li></ul>
+    <div class="callout"><b>Progression rule:</b> hit the top of the rep range clean → next time add a rep or 2.5–5 lb. Log every set (do it on the Today tab).</div>
+
+    <h2>Cardio &amp; zones</h2>
+    <ul class="c"><li><b>Zone 2</b> — 2–3×/wk, 20–30 min easy <span class="m">(walk/bike, conversational pace). Heart health + recovery.</span></li><li><b>Zone 4–5 (optional)</b> — 1×/wk <span class="m">6 × 30-sec bike sprints. Builds VO₂.</span></li></ul>
+
+    <h2>Nutrition — hit your targets</h2>
+    <ul class="c"><li><b>Pre-workout:</b> <span class="m">eggs + oats with banana &amp; honey (~600 cal / 35P).</span></li><li><b>Post-workout lunch (biggest):</b> <span class="m">chicken + 1.5 cups rice + veg (~760 cal / 58P).</span></li><li><b>Dinner:</b> <span class="m">family dinner (protein + carb + veg) — 2 palms protein, 2–3 cupped carbs.</span></li><li><b>Evening:</b> <span class="m">protein Ninja Creami (~500 cal / 40P).</span></li><li><b>Fill:</b> <span class="m">Greek yogurt + granola to top up on big days.</span></li></ul>
+
+    <h2>Documentation — daily</h2>
+    <ul class="c"><li><b>Day-1 photos + measurements today.</b></li><li><b>Morning weigh-in</b> every day (Today tab).</li><li><b>30–60 sec diary video</b> daily.</li><li><b>Film one working set</b> each session.</li><li><b>Weekly:</b> photos, measurements, 3-min recap.</li></ul>
+
     <h2>Supplements</h2>
-    <ul class="c"><li>Creatine 5g/day · Whey · Vitamin D3 · Fish oil</li></ul>
+    <ul class="c"><li>Creatine 5g/day · Whey · Vitamin D3 · Fish oil <span class="m">(check with a doctor first).</span></li></ul>
     <div style="height:18px"></div>
   </div>
 
@@ -172,10 +185,9 @@
     <div style="height:18px"></div>
   </div>
 
-  <!-- NAV -->
   <div class="nav">
     <button class="on" data-s="today" onclick="go('today')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9" stroke-linecap="round"/></svg>Today</button>
-    <button data-s="plan" onclick="go('plan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg>Plan</button>
+    <button data-s="plan" onclick="go('plan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg>Program</button>
     <button data-s="prog" onclick="go('prog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 15l4-4 4 3 8-8" stroke-linecap="round" stroke-linejoin="round"/></svg>Progress</button>
     <button data-s="photos" onclick="go('photos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>Photos</button>
   </div>
@@ -184,7 +196,7 @@
 
 <script>
 (function(){
-  var KEY='apex_alex_v1';
+  var KEY='apex_alex_v2';
   var db=JSON.parse(localStorage.getItem(KEY)||'{}');
   if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0;
   function save(){localStorage.setItem(KEY,JSON.stringify(db));}
@@ -194,36 +206,40 @@
   var day=db.days[TODAY]||{water:0,food:'',journal:'',reading:'',rating:0};
   db.days[TODAY]=day;
 
-  // nav
   window.go=function(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s);});document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on',b.dataset.s===s);});window.scrollTo(0,0);if(s==='prog')drawSpark();};
 
-  // water
   var drops=document.getElementById('water-drops');
   for(var i=0;i<12;i++){var d=document.createElement('div');d.className='drop';d.onclick=(function(n){return function(){day.water=n+1;save();paintWater();};})(i);drops.appendChild(d);}
   function paintWater(){document.getElementById('water-n').textContent=day.water;[].forEach.call(drops.children,function(c,i){c.classList.toggle('full',i<day.water);});}
   window.water=function(n){day.water=Math.max(0,Math.min(12,day.water+n));save();paintWater();};
   paintWater();
 
-  // rating
   var rc=document.getElementById('rating');
   for(var r=1;r<=5;r++){(function(v){var b=document.createElement('button');b.className='round';b.style.flex='1';b.textContent=v;b.onclick=function(){day.rating=v;save();paintRating();};rc.appendChild(b);})(r);}
   function paintRating(){[].forEach.call(rc.children,function(c,i){var on=(i+1)<=day.rating;c.style.background=on?'var(--copper)':'var(--ground)';c.style.color=on?'#fff':'var(--copper)';c.style.borderColor=on?'var(--copper)':'var(--line)';});}
   paintRating();
 
-  // restore text fields
   document.getElementById('food').value=day.food||'';
   document.getElementById('journal').value=day.journal||'';
   document.getElementById('reading').value=day.reading||'';
 
-  // workout
-  var SPLIT={'Push':['Bench Press','Incline DB Press','Shoulder Press','Lateral Raise','Triceps Pushdown'],'Pull':['Pull-ups / Pulldown','Barbell Row','Chest-Supported Row','Face Pulls','Curls'],'Legs':['Squat','Romanian Deadlift','Leg Press','Leg Curl','Calf Raise'],'Rest / Cardio':['Zone 2 walk or bike (min)']};
+  var SPLIT={
+    'Push A':[['Barbell Bench','4×6–8'],['Incline DB Press','3×8–12'],['Shoulder Press','3×8–12'],['Lateral Raise','3×12–15'],['Triceps Pushdown','3×10–15'],['Overhead Triceps Ext.','2×12–15']],
+    'Pull A':[['Pull-ups / Pulldown','4×6–10'],['Barbell Row','3×8–10'],['Chest-Supported Row','3×10–12'],['Face Pulls','3×15'],['EZ-Bar Curl','3×8–12'],['Incline DB Curl','2×12–15']],
+    'Legs A':[['Back Squat','4×6–8'],['Romanian Deadlift','3×8–10'],['Leg Press','3×12–15'],['Seated Leg Curl','3×10–12'],['Standing Calf Raise','4×12–15'],['Hanging Leg Raise','3×10–15']],
+    'Push B':[['Overhead Press','4×6–8'],['Flat DB Press','3×8–12'],['Incline Cable Fly','3×12–15'],['DB Lateral Raise','4×12–15'],['Dips','3×8–12'],['Triceps Pushdown','2×12–15']],
+    'Pull B':[['Lat Pulldown','4×8–12'],['One-Arm DB Row','3×8–12'],['Seated Cable Row','3×10–12'],['Rear-Delt Fly','3×15'],['Preacher Curl','3×10–12'],['Cable Curl','2×12–15']],
+    'Legs B':[['Hack Squat','4×8–10'],['Bulgarian Split Squat','3×8–10/leg'],['Leg Extension','3×12–15'],['Lying Leg Curl','3×10–12'],['Seated Calf Raise','4×15'],['Cable Crunch','3×12–15']],
+    'Rest / Cardio':[['Zone 2 walk or bike','30–40 min']]
+  };
   var sel=document.getElementById('wk-day');
   Object.keys(SPLIT).forEach(function(k){var o=document.createElement('option');o.textContent=k;sel.appendChild(o);});
   window.renderWorkout=function(){
     var ex=SPLIT[sel.value],box=document.getElementById('wk-log');box.innerHTML='';
-    ex.forEach(function(name,i){
+    document.getElementById('wk-hint').textContent='Target sets × reps shown for each. Enter what you actually hit.';
+    ex.forEach(function(pair,i){
       var wrap=document.createElement('div');wrap.className='ex';
-      wrap.innerHTML='<div class="name">'+name+'</div><div class="sets"><div style="flex:1"><span class="lab">weight</span><input type="number" inputmode="decimal" data-ex="'+i+'" data-f="w" placeholder="lb"></div><div style="flex:1"><span class="lab">reps</span><input type="number" inputmode="numeric" data-ex="'+i+'" data-f="r" placeholder="reps"></div><div style="flex:1"><span class="lab">sets</span><input type="number" inputmode="numeric" data-ex="'+i+'" data-f="s" placeholder="sets"></div></div>';
+      wrap.innerHTML='<div class="name"><span>'+pair[0]+'</span><span class="rx">'+pair[1]+'</span></div><div class="sets"><div style="flex:1"><span class="lab">weight</span><input type="number" inputmode="decimal" data-f="w" placeholder="lb"></div><div style="flex:1"><span class="lab">reps</span><input type="number" inputmode="numeric" data-f="r" placeholder="reps"></div><div style="flex:1"><span class="lab">sets</span><input type="number" inputmode="numeric" data-f="s" placeholder="sets"></div></div>';
       box.appendChild(wrap);
     });
   };
@@ -232,13 +248,12 @@
     var ex=SPLIT[sel.value],entries=[];
     document.querySelectorAll('#wk-log .ex').forEach(function(el,i){
       var w=el.querySelector('[data-f=w]').value,r=el.querySelector('[data-f=r]').value,s=el.querySelector('[data-f=s]').value;
-      if(w||r||s)entries.push(ex[i]+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb');
+      if(w||r||s)entries.push(ex[i][0]+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb');
     });
     if(!entries.length){toast('Log at least one set');return;}
     db.workouts.unshift({date:TODAY,day:sel.value,sets:entries});save();paintHistory();toast('Workout saved ✓');
   };
 
-  // weight
   window.saveWeight=function(){
     var v=parseFloat(document.getElementById('weight').value);if(!v){toast('Enter a weight');return;}
     db.weights=db.weights.filter(function(x){return x.date!==TODAY;});
@@ -256,8 +271,8 @@
     db.workouts.slice(0,15).forEach(function(w){var d=document.createElement('div');d.style.flexDirection='column';d.style.alignItems='flex-start';d.innerHTML='<b>'+w.day+' · <span class="m" style="font-weight:400">'+w.date+'</span></b><div class="m" style="font-size:13px;margin-top:4px">'+w.sets.join(' · ')+'</div>';el.appendChild(d);});
   }
   function drawSpark(){
-    var c=document.getElementById('spark');if(!c)return;var ctx=c.getContext('2d');var W=c.width=c.offsetWidth*2,H=c.height=120;ctx.scale(1,1);
-    ctx.clearRect(0,0,W,H);var ws=db.weights.slice(-14);if(ws.length<2){ctx.fillStyle=getCss('--ink-soft');ctx.font='24px system-ui';ctx.fillText('Log a few weigh-ins to see your trend',20,60);return;}
+    var c=document.getElementById('spark');if(!c)return;var ctx=c.getContext('2d');var W=c.width=c.offsetWidth*2,H=c.height=120;
+    ctx.clearRect(0,0,W,H);var ws=db.weights.slice(-14);if(ws.length<2){ctx.fillStyle=getCss('--ink-soft');ctx.font='22px system-ui';ctx.fillText('Log a few weigh-ins to see your trend',20,60);return;}
     var vals=ws.map(function(x){return x.w;}),mn=Math.min.apply(0,vals)-1,mx=Math.max.apply(0,vals)+1,rng=mx-mn||1;
     ctx.strokeStyle=getCss('--copper');ctx.lineWidth=5;ctx.beginPath();
     ws.forEach(function(x,i){var px=20+i*(W-40)/(ws.length-1),py=H-20-(x.w-mn)/rng*(H-40);i?ctx.lineTo(px,py):ctx.moveTo(px,py);});ctx.stroke();
@@ -265,20 +280,17 @@
   }
   function getCss(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
 
-  // photos (preview only)
   document.getElementById('photo-in').addEventListener('change',function(e){
     var t=document.getElementById('thumbs');
     [].forEach.call(e.target.files,function(f){var url=URL.createObjectURL(f);var img=document.createElement('img');img.src=url;t.appendChild(img);db.photos++;});
     save();toast(e.target.files.length+' photo(s) added');
   });
 
-  // save day
   window.saveDay=function(){
     day.food=document.getElementById('food').value;day.journal=document.getElementById('journal').value;day.reading=document.getElementById('reading').value;
     save();toast('Today saved ✓');
   };
 
-  // export
   window.exportAll=function(){
     var L=['APEX — ALEX — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
     L.push('WEIGH-INS:');db.weights.forEach(function(x){L.push('  '+x.date+': '+x.w+' lb');});
@@ -292,7 +304,6 @@
 
   var tt=document.getElementById('toast');
   function toast(m){tt.textContent=m;tt.classList.add('show');setTimeout(function(){tt.classList.remove('show');},2200);}
-
   paintWeights();paintHistory();
 })();
 </script>
