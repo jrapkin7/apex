@@ -49,7 +49,9 @@
   /* today workout */
   .ex{border-top:1px solid var(--line);padding:13px 0;}
   .ex:first-child{border-top:none;}
-  .ex .name{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .ex .name{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;}
+  .ex .name input.exname{flex:1;min-width:0;font:inherit;font-weight:600;font-size:14.5px;color:var(--ink);background:transparent;border:none;border-bottom:1px dashed var(--line);border-radius:0;padding:0 0 3px;}
+  .ex .name input.exname:focus{outline:none;border-bottom-color:var(--copper);background:transparent;}
   .ex .rx{font-family:var(--mono);font-size:11px;color:var(--copper-deep);background:var(--tint);padding:2px 7px;border-radius:6px;white-space:nowrap;}
   .ex .sets{display:flex;gap:8px;}
   .ex .sets input{text-align:center;padding:11px 6px;}
@@ -271,7 +273,7 @@
 (function(){
   var KEY='apex_alex_v2';
   var db=JSON.parse(localStorage.getItem(KEY)||'{}');
-  if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0; if(!db.cardio)db.cardio=[];
+  if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0; if(!db.cardio)db.cardio=[]; if(!db.subs)db.subs={};
   function save(){localStorage.setItem(KEY,JSON.stringify(db));}
   function tkey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   var TODAY=tkey();
@@ -343,19 +345,24 @@
   Object.keys(SPLIT).forEach(function(k){var o=document.createElement('option');o.textContent=k;sel.appendChild(o);});
   window.renderWorkout=function(){
     var ex=SPLIT[sel.value],box=document.getElementById('wk-log');box.innerHTML='';
-    document.getElementById('wk-hint').textContent='Target sets × reps shown for each. Enter what you actually hit.';
+    document.getElementById('wk-hint').textContent='Tap an exercise name to swap it — your sets × reps stay the same. Enter what you actually hit.';
     ex.forEach(function(pair,i){
+      var key=sel.value+'#'+i;
+      var nm=db.subs[key]||pair[0];
       var wrap=document.createElement('div');wrap.className='ex';
-      wrap.innerHTML='<div class="name"><span>'+pair[0]+'</span><span class="rx">'+pair[1]+'</span></div><div class="sets"><div style="flex:1"><span class="lab">weight</span><input type="number" inputmode="decimal" data-f="w" placeholder="lb"></div><div style="flex:1"><span class="lab">reps</span><input type="number" inputmode="numeric" data-f="r" placeholder="reps"></div><div style="flex:1"><span class="lab">sets</span><input type="number" inputmode="numeric" data-f="s" placeholder="sets"></div></div>';
+      wrap.innerHTML='<div class="name"><input class="exname" data-f="name" value="'+nm+'"><span class="rx">'+pair[1]+'</span></div><div class="sets"><div style="flex:1"><span class="lab">weight</span><input type="number" inputmode="decimal" data-f="w" placeholder="lb"></div><div style="flex:1"><span class="lab">reps</span><input type="number" inputmode="numeric" data-f="r" placeholder="reps"></div><div style="flex:1"><span class="lab">sets</span><input type="number" inputmode="numeric" data-f="s" placeholder="sets"></div></div>';
       box.appendChild(wrap);
+      var ni=wrap.querySelector('.exname');
+      ni.addEventListener('input',function(){if(ni.value.trim()){db.subs[key]=ni.value;}else{delete db.subs[key];}save();});
     });
   };
   renderWorkout();
   window.saveWorkout=function(){
     var ex=SPLIT[sel.value],entries=[];
     document.querySelectorAll('#wk-log .ex').forEach(function(el,i){
+      var nm=el.querySelector('[data-f=name]').value.trim()||ex[i][0];
       var w=el.querySelector('[data-f=w]').value,r=el.querySelector('[data-f=r]').value,s=el.querySelector('[data-f=s]').value;
-      if(w||r||s)entries.push(ex[i][0]+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb');
+      if(w||r||s)entries.push(nm+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb');
     });
     if(!entries.length){toast('Log at least one set');return;}
     db.workouts.unshift({date:TODAY,day:sel.value,sets:entries});save();paintHistory();toast('Workout saved ✓');

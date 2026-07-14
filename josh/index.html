@@ -1,4 +1,4 @@
-<title>Apex — Max</title>
+<title>Apex — Josh</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <style>
   :root{
@@ -64,6 +64,8 @@
   .m{color:var(--ink-soft);}
   .callout{background:var(--tint);border-radius:12px;padding:13px 15px;font-size:13px;margin:10px 0;}
   .callout b{color:var(--copper-deep);}
+  .prov{background:var(--copper);color:#fff;border-radius:12px;padding:11px 14px;font-size:12.5px;margin:12px 0;}
+  .prov b{color:#fff;}
   .wlist div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:14px;}
   .wlist div:first-child{border-top:none;}
   .wlist b{font-variant-numeric:tabular-nums;}
@@ -91,8 +93,8 @@
 
 <div class="app">
   <div class="top">
-    <div class="brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.4"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg><b>Apex</b><span>·&nbsp;Max</span></div>
-    <div class="who">Strong &amp; healthy</div>
+    <div class="brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.4"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg><b>Apex</b><span>·&nbsp;Josh</span></div>
+    <div class="who">Fat loss + metabolic</div>
   </div>
 
   <!-- TODAY -->
@@ -100,8 +102,10 @@
     <div class="date" id="today-date">TODAY</div>
     <h1>Today's plan</h1>
 
+    <div class="prov"><b>Provisional plan.</b> Built from what we have now — PNOE RMR, Oura, and your May labs. Your targets lock in the moment your DexaFit numbers are in (DEXA body comp + VO₂ + measured RMR).</div>
+
     <h2>Your targets today</h2>
-    <div class="card"><div class="macros"><div class="mac"><b>2,500</b><span>cal</span></div><div class="mac"><b>150g</b><span>protein</span></div><div class="mac"><b>83g</b><span>fat</span></div><div class="mac"><b>288g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">This is <b>fuel, not a diet.</b> You're 15 and growing — we lean out by eating <b>better,</b> not less.</div></div>
+    <div class="card"><div class="macros"><div class="mac"><b>2,300</b><span>cal</span></div><div class="mac"><b>200g</b><span>protein</span></div><div class="mac"><b>77g</b><span>fat</span></div><div class="mac"><b>202g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">Steady fat loss with muscle held. <b>Protein floor 200g</b> even on low-appetite days on tirzepatide.</div></div>
 
     <h2>Today's workout — log as you go</h2>
     <div class="card">
@@ -113,12 +117,12 @@
     </div>
 
     <h2>Morning weigh-in</h2>
-    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Once or twice a week is plenty — don't stress the daily number while you're growing.</div></div>
+    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Fasted, after the bathroom. Trend matters more than any single day.</div></div>
 
     <h2>Water</h2>
     <div class="card">
       <div class="row" style="justify-content:space-between;align-items:flex-end">
-        <span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 100 oz</span></span>
+        <span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 130 oz</span></span>
         <div class="row" style="gap:6px">
           <button class="round" onclick="water(-8)">−</button>
           <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(8)">+8</button>
@@ -127,31 +131,31 @@
         </div>
       </div>
       <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="water-bar"></i></div></div>
-      <div class="note" style="margin-bottom:0">Target 100 oz. Water or milk — swap the sugary drinks. +8 glass · +16 bottle · +24 big bottle.</div>
+      <div class="note" style="margin-bottom:0">Target 130 oz. +8 glass · +16 bottle · +24 big bottle.</div>
     </div>
 
     <h2>Steps</h2>
     <div class="card">
       <div class="row"><input type="number" id="steps" inputmode="numeric" placeholder="steps today"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveSteps()">Log</button></div>
       <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="steps-bar"></i></div><b id="steps-pct">0%</b></div>
-      <div class="note" style="margin-bottom:0">Target 10,000/day. Sports and walking count — just keep moving.</div>
+      <div class="note" style="margin-bottom:0">Target 10,000/day. Auto-syncs from your Oura ring once wearables are connected.</div>
     </div>
 
-    <h2>Cardio &amp; sport</h2>
+    <h2>Cardio</h2>
     <div class="card">
-      <select id="cardio-type"><option>Walk</option><option>Basketball / sport</option><option>Bike</option><option>Incline treadmill</option><option>Elliptical</option><option>Other</option></select>
+      <select id="cardio-type"><option>Zone 2 bike</option><option>Incline walk</option><option>Elliptical</option><option>VO₂ bike intervals</option><option>Swim</option><option>Other (low-impact)</option></select>
       <div class="row" style="margin-top:10px;gap:10px"><div style="flex:1"><label>minutes</label><input type="number" id="cardio-min" inputmode="numeric" placeholder="min"></div><div style="flex:1"><label>distance <span class="m">(opt)</span></label><input type="number" id="cardio-dist" inputmode="decimal" placeholder="mi"></div></div>
-      <button class="btn ghost" style="margin-top:12px" onclick="saveCardio()">Log activity ✓</button>
+      <button class="btn ghost" style="margin-top:12px" onclick="saveCardio()">Log cardio ✓</button>
       <div class="wlist" id="cardio-list" style="margin-top:10px"></div>
     </div>
 
     <h2>Food &amp; macros hit</h2>
     <div class="card">
       <div class="mgrid">
-        <div><label>Calories</label><input type="number" id="m-cal" inputmode="numeric" placeholder="0"><span class="tgt">/ 2,500</span></div>
-        <div><label>Protein (g)</label><input type="number" id="m-p" inputmode="numeric" placeholder="0"><span class="tgt">/ 150</span></div>
-        <div><label>Fat (g)</label><input type="number" id="m-f" inputmode="numeric" placeholder="0"><span class="tgt">/ 83</span></div>
-        <div><label>Carbs (g)</label><input type="number" id="m-c" inputmode="numeric" placeholder="0"><span class="tgt">/ 288</span></div>
+        <div><label>Calories</label><input type="number" id="m-cal" inputmode="numeric" placeholder="0"><span class="tgt">/ 2,300</span></div>
+        <div><label>Protein (g)</label><input type="number" id="m-p" inputmode="numeric" placeholder="0"><span class="tgt">/ 200</span></div>
+        <div><label>Fat (g)</label><input type="number" id="m-f" inputmode="numeric" placeholder="0"><span class="tgt">/ 77</span></div>
+        <div><label>Carbs (g)</label><input type="number" id="m-c" inputmode="numeric" placeholder="0"><span class="tgt">/ 202</span></div>
       </div>
       <div class="pbar"><span>Protein</span><div class="ptrack"><i id="bar-p"></i></div><b id="pct-p">0%</b></div>
       <div class="pbar"><span>Calories</span><div class="ptrack"><i id="bar-cal"></i></div><b id="pct-cal">0%</b></div>
@@ -174,59 +178,60 @@
 
   <!-- PLAN -->
   <div class="screen" id="s-plan">
-    <div class="date">YOUR FULL PROGRAM · WEEK 1</div>
-    <h1>Get strong &amp; lean — the healthy way</h1>
-    <p class="note">You're 15 and growing, so we don't cut calories. We upgrade what you eat, train with great form, and move more. That's how you lean out and get stronger at the same time.</p>
+    <div class="date">YOUR FULL PROGRAM · WEEK 1 (PROVISIONAL)</div>
+    <h1>Fat loss + metabolic — hip-safe</h1>
+    <p class="note">Built from your Oura, PNOE metabolic test, and latest labs. Drop body fat while holding muscle, sharpen the metabolic markers, and train around the hip. This sharpens the day your DexaFit numbers land.</p>
 
-    <div class="callout"><b>Parent + pediatrician first:</b> do this program with your parents, and get your pediatrician's OK before starting. No dieting to lose weight at your age, no creatine, no pre-workout, and no peptides — real food and good training do the work.</div>
+    <div class="prov"><b>Locks in after DexaFit:</b> measured DEXA body composition + graded VO₂ (bike) + clean fasted RMR replace the provisional estimates and set exact calories, protein, and cardio zones.</div>
 
     <h2>Daily macro targets</h2>
-    <div class="card"><div class="macros"><div class="mac"><b>2,500</b><span>cal</span></div><div class="mac"><b>150g</b><span>protein</span></div><div class="mac"><b>83g</b><span>fat</span></div><div class="mac"><b>288g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">Eat to grow and get stronger. We lean out by improving food <b>quality</b> and moving more — not by starving.</div></div>
+    <div class="card"><div class="macros"><div class="mac"><b>2,300</b><span>cal</span></div><div class="mac"><b>200g</b><span>protein</span></div><div class="mac"><b>77g</b><span>fat</span></div><div class="mac"><b>202g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">On tirzepatide appetite runs low — hit protein first, every meal, even when you're not hungry. Fiber + veg do double duty for lipids and insulin.</div></div>
 
-    <h2>Training — form first, 4-day rotation</h2>
+    <h2>Training — hip-safe, 4 days</h2>
     <div class="plan">
-      <details open><summary>Push · form first</summary><table><tr><td>DB Bench Press</td><td class="s">3×8–12</td></tr><tr><td>Seated DB Shoulder Press</td><td class="s">3×10–12</td></tr><tr><td>Incline DB Press</td><td class="s">3×10–12</td></tr><tr><td>Cable Lateral Raise</td><td class="s">3×12–15</td></tr><tr><td>Triceps Pushdown</td><td class="s">3×12–15</td></tr><tr><td>Plank</td><td class="s">3×30–45s</td></tr></table></details>
-      <details><summary>Pull · form first</summary><table><tr><td>Lat Pulldown</td><td class="s">3×10–12</td></tr><tr><td>Chest-Supported Row</td><td class="s">3×10–12</td></tr><tr><td>Seated Cable Row</td><td class="s">3×10–12</td></tr><tr><td>Face Pulls</td><td class="s">3×15</td></tr><tr><td>DB Curl</td><td class="s">3×10–12</td></tr><tr><td>Hanging Knee Raise</td><td class="s">3×10–12</td></tr></table></details>
-      <details><summary>Legs · form first</summary><table><tr><td>Goblet Squat</td><td class="s">3×10–12</td></tr><tr><td>Leg Press</td><td class="s">3×12–15</td></tr><tr><td>DB Romanian Deadlift (light)</td><td class="s">3×10–12</td></tr><tr><td>Leg Extension</td><td class="s">3×12–15</td></tr><tr><td>Seated Leg Curl</td><td class="s">3×12–15</td></tr><tr><td>Calf Raise</td><td class="s">3×15</td></tr></table></details>
-      <details><summary>Full Body (5th day, optional)</summary><div style="padding:12px 15px;font-size:13.5px" class="m">Goblet Squat, DB Bench, Lat Pulldown, light DB RDL, Plank — 3 sets each, easy pace. A great day to just practice form.</div></details>
+      <details open><summary>Upper A · push</summary><table><tr><td>DB Bench Press</td><td class="s">4×8–10</td></tr><tr><td>Incline DB Press</td><td class="s">3×10–12</td></tr><tr><td>Machine Shoulder Press</td><td class="s">3×10–12</td></tr><tr><td>Cable Lateral Raise</td><td class="s">3×12–15</td></tr><tr><td>Triceps Pushdown</td><td class="s">3×12–15</td></tr><tr><td>Cable Row</td><td class="s">3×10–12</td></tr></table></details>
+      <details><summary>Lower A · hip-safe</summary><table><tr><td>Leg Press (controlled ROM)</td><td class="s">4×10–12</td></tr><tr><td>Leg Extension</td><td class="s">3×12–15</td></tr><tr><td>Seated Leg Curl</td><td class="s">3×12–15</td></tr><tr><td>Hip Thrust (comfortable range)</td><td class="s">3×10–12</td></tr><tr><td>Hip Abduction</td><td class="s">3×15</td></tr><tr><td>Standing Calf Raise</td><td class="s">4×12–15</td></tr></table></details>
+      <details><summary>Upper B · pull</summary><table><tr><td>Lat Pulldown</td><td class="s">4×10–12</td></tr><tr><td>Chest-Supported Row</td><td class="s">3×10–12</td></tr><tr><td>Seated DB Shoulder Press</td><td class="s">3×10–12</td></tr><tr><td>Face Pulls</td><td class="s">3×15</td></tr><tr><td>DB Curl</td><td class="s">3×10–12</td></tr><tr><td>Rope Pushdown</td><td class="s">3×12–15</td></tr></table></details>
+      <details><summary>Lower B · hip-safe</summary><table><tr><td>Hack Squat (controlled)</td><td class="s">4×10–12</td></tr><tr><td>Back Extension (machine)</td><td class="s">3×12–15</td></tr><tr><td>Leg Extension</td><td class="s">3×12–15</td></tr><tr><td>Lying Leg Curl</td><td class="s">3×12–15</td></tr><tr><td>Seated Calf Raise</td><td class="s">4×15</td></tr><tr><td>Pallof Press</td><td class="s">3×10/side</td></tr></table></details>
     </div>
-    <div class="callout"><b>Form-first rule:</b> leave 2 reps in the tank, control every rep, and never max out. Master the movement before you add weight — ask a parent or coach to check your form. Log every set on the Today tab.</div>
+    <div class="callout"><b>Hip rules:</b> stay in your cleared, pain-free range — no deep loaded flexion, no high-impact, no forcing depth. Machines and supported movements first. Confirm your range with your surgeon if anything feels off.</div>
 
-    <h2>Activity &amp; cardio</h2>
-    <ul class="c"><li><b>Move every day</b> — aim 8–10k steps. Sports totally count.</li><li><b>Play the sports you like</b> <span class="m">— basketball, biking, swimming. Fun + consistent beats forced.</span></li></ul>
+    <h2>Metabolic scorecard — what we're moving</h2>
+    <ul class="c"><li><b>ApoB &amp; LDL-P</b> <span class="m">down — protein, fiber, cardio, fat quality.</span></li><li><b>Fasting insulin / HOMA-IR</b> <span class="m">down — steps, training, lower refined carb.</span></li><li><b>HbA1c ≤ 5.4 · HDL ≥ 45 · ferritin rebuild.</b></li></ul>
+    <div class="callout"><b>Meds stay with your prescriber.</b> Your TRT, HGH, tirzepatide, and metformin are managed by your doctor — this app tracks training, food, and recovery only, and never changes your meds.</div>
 
-    <h2>Nutrition — upgrade your plate</h2>
-    <ul class="c"><li><b>More real protein</b> <span class="m">— eggs, chicken, turkey, Greek yogurt, milk at every meal.</span></li><li><b>Add a vegetable or fruit</b> <span class="m">to every meal — color on the plate.</span></li><li><b>Swap sugary drinks</b> <span class="m">for water or milk.</span></li><li><b>Mix it up</b> <span class="m">— less repeating the same smoothie + quesadilla, more variety.</span></li></ul>
+    <h2>Cardio &amp; zones</h2>
+    <ul class="c"><li><b>Zone 2, low-impact</b> — 3–4×/wk, 30–40 min <span class="m">(bike, incline walk, elliptical). Fat oxidation + heart.</span></li><li><b>VO₂ bike intervals</b> — 1×/wk <span class="m">once cleared: 4–6 × 1-min hard / 2-min easy. Bike protocol for the hip.</span></li></ul>
 
     <h2>Documentation — daily</h2>
-    <ul class="c"><li><b>Day-1 photos + measurements today.</b></li><li><b>Weigh in</b> 1–2×/week (Today tab).</li><li><b>Quick note</b> on how training and food went.</li><li><b>Weekly:</b> photos + a 2-min recap with your dad.</li></ul>
+    <ul class="c"><li><b>Day-1 photos + measurements.</b></li><li><b>Morning weigh-in</b> every day (trend, not single days).</li><li><b>30–60 sec diary video</b> daily.</li><li><b>Upload labs + DEXA</b> as they come (parsing + trending is on the roadmap).</li><li><b>Weekly:</b> photos, waist measurement, 3-min recap.</li></ul>
 
     <h2>Supplements</h2>
-    <ul class="c"><li><b>None needed — food does the work.</b> <span class="m">No creatine, no pre-workout, no peptides. A multivitamin or vitamin D only if your pediatrician recommends it.</span></li></ul>
+    <ul class="c"><li>Creatine 5g · Whey · Fish oil (lipids) · Vitamin D3 · Magnesium · Psyllium fiber <span class="m">(fiber helps ApoB — confirm everything with your prescriber alongside your current meds).</span></li></ul>
     <div style="height:18px"></div>
   </div>
 
   <!-- FUEL -->
   <div class="screen" id="s-fuel">
     <div class="date">FUEL · MEAL IDEAS &amp; PREP</div>
-    <h1>Hit 2,500 cal · 150g protein — with better food</h1>
-    <p class="note">The goal isn't less food — it's <b>better</b> food. Each block lists rough macros so you can swap freely. Log what you actually eat on the Today tab.</p>
+    <h1>Hit 2,300 cal · 200g protein</h1>
+    <p class="note">Protein-dense and lower-volume — built for a low appetite on tirzepatide. Each block lists rough macros so you can swap freely. Log what you actually eat on the Today tab.</p>
 
     <h2>A full day that hits your macros</h2>
     <div class="plan">
-      <details open><summary>Breakfast · ~500 cal / 35P</summary><table><tr><td>Scrambled eggs + fruit + whole-grain toast</td><td class="s">30P</td></tr><tr><td class="m" style="font-size:12.5px">Upgraded smoothie: milk + Greek yogurt + protein + banana + spinach + PB</td><td class="s">40P</td></tr></table></details>
-      <details><summary>Lunch · ~650 cal / 45P</summary><table><tr><td>Chicken quesadilla UPGRADED — add grilled chicken + veggies + fruit on the side</td><td class="s">45P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: turkey + cheese wrap + apple</td><td class="s">38P</td></tr></table></details>
-      <details><summary>Dinner (family meal) · ~700 cal / 45P</summary><table><tr><td>Family dinner — protein + veg + carb</td><td class="s">45P</td></tr><tr><td class="m" style="font-size:12.5px">Go back for seconds on protein &amp; veg, not just the carbs</td><td class="s">—</td></tr></table></details>
-      <details><summary>Snacks &amp; fill · ~650 cal / 25P</summary><table><tr><td>Greek yogurt / cheese stick + fruit</td><td class="s">15P</td></tr><tr><td>Protein shake or milk</td><td class="s">25P</td></tr><tr><td>Nuts / jerky / turkey roll-ups</td><td class="s">—</td></tr></table></details>
+      <details open><summary>Breakfast · ~450 cal / 50P</summary><table><tr><td>Greek yogurt + berries + scoop whey</td><td class="s">45P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: 3 eggs + turkey + spinach</td><td class="s">40P</td></tr></table></details>
+      <details><summary>Lunch · ~600 cal / 55P</summary><table><tr><td>Lean protein (chicken/fish) + big veg + small potato/quinoa + olive oil</td><td class="s">55P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: big salad + salmon + beans</td><td class="s">48P</td></tr></table></details>
+      <details><summary>Dinner (family meal) · ~600 cal / 50P</summary><table><tr><td>Protein-forward, veg-heavy — palm+ of protein, load the vegetables</td><td class="s">50P</td></tr><tr><td class="m" style="font-size:12.5px">Eat the family dinner, hold the refined-carb sides</td><td class="s">—</td></tr></table></details>
+      <details><summary>Snacks &amp; fill · ~650 cal / 45P</summary><table><tr><td>Protein shake</td><td class="s">30P</td></tr><tr><td>Cottage cheese / jerky / turkey roll-ups</td><td class="s">15P</td></tr><tr><td>Handful of nuts or an apple + PB</td><td class="s">—</td></tr></table></details>
     </div>
-    <div class="callout"><b>The one rule:</b> protein + a vegetable or fruit at every meal, and swap sugary drinks for water or milk. Do that and the rest takes care of itself.</div>
+    <div class="callout"><b>Rule of thumb:</b> protein first at every meal, even without appetite — it's the muscle you keep while the fat comes off. Fiber and vegetables at each meal work your lipids and insulin at the same time.</div>
 
-    <h2>Grocery staples to keep around</h2>
+    <h2>Grocery staples to prep ahead</h2>
     <ul class="c">
-      <li><b>Protein:</b> <span class="m">eggs, chicken, ground turkey, Greek yogurt, milk, cheese, jerky, whey.</span></li>
-      <li><b>Carbs:</b> <span class="m">whole-grain bread/wraps, rice, oats, potatoes, fruit.</span></li>
-      <li><b>Veg &amp; fats:</b> <span class="m">any veggies you like, peanut butter, nuts, avocado, olive oil.</span></li>
-      <li><b>Grab-and-go:</b> <span class="m">pre-portion yogurt, cheese sticks, fruit, and turkey so the easy choice is the good one.</span></li>
+      <li><b>Protein:</b> <span class="m">chicken, fish/salmon, eggs, Greek yogurt, cottage cheese, whey, lean beef, jerky.</span></li>
+      <li><b>Fiber &amp; carbs:</b> <span class="m">beans, lentils, berries, oats, potatoes, quinoa, loads of vegetables.</span></li>
+      <li><b>Fats:</b> <span class="m">olive oil, avocado, nuts, seeds — favor unsaturated for the lipids.</span></li>
+      <li><b>Prep once:</b> <span class="m">batch-cook protein + a big tray of roasted veg on Sunday — hitting 200g protein gets easy.</span></li>
     </ul>
 
     <div class="callout" style="background:var(--ground)"><b>Coming soon:</b> a searchable food tracker — type or scan a food and it auto-fills the macros into your Today log. For now, use the numbers above and enter your daily totals on the Today tab.</div>
@@ -248,7 +253,7 @@
   <div class="screen" id="s-photos">
     <div class="date">PHOTOS</div>
     <h1>Progress photos</h1>
-    <p class="note">Front / side / back. Same spot, light, morning. Take your <b>Day-1 set today</b> (with a parent's help is totally fine).</p>
+    <p class="note">Front / side / back, relaxed &amp; flexed. Same spot, light, morning, fasted. Take your <b>Day-1 set today.</b></p>
     <label class="filebtn">＋ Add photos from your camera roll<input type="file" accept="image/*" multiple id="photo-in"></label>
     <div class="thumbs" id="thumbs"></div>
     <p class="note">These preview here and stay in your camera roll. When the full app is live, they'll upload and store on your profile automatically.</p>
@@ -267,7 +272,7 @@
 
 <script>
 (function(){
-  var KEY='apex_max_v2';
+  var KEY='apex_josh_v2';
   var db=JSON.parse(localStorage.getItem(KEY)||'{}');
   if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0; if(!db.cardio)db.cardio=[]; if(!db.subs)db.subs={};
   function save(){localStorage.setItem(KEY,JSON.stringify(db));}
@@ -279,7 +284,7 @@
 
   window.go=function(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s);});document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on',b.dataset.s===s);});window.scrollTo(0,0);if(s==='prog')drawSpark();};
 
-  var WGOAL=100;
+  var WGOAL=130;
   if(day.water>0&&day.water<=12)day.water=day.water*8;
   function paintWater(){var oz=day.water||0;document.getElementById('water-n').textContent=oz;document.getElementById('water-bar').style.width=Math.min(100,Math.round(oz/WGOAL*100))+'%';}
   window.water=function(n){day.water=Math.max(0,(day.water||0)+n);save();paintWater();};
@@ -295,7 +300,7 @@
     var t=document.getElementById('cardio-type').value,m=document.getElementById('cardio-min').value,di=document.getElementById('cardio-dist').value;
     if(!m&&!di){toast('Enter minutes');return;}
     db.cardio.unshift({date:TODAY,type:t,min:m,dist:di});save();paintCardio();
-    document.getElementById('cardio-min').value='';document.getElementById('cardio-dist').value='';toast('Activity logged ✓');
+    document.getElementById('cardio-min').value='';document.getElementById('cardio-dist').value='';toast('Cardio logged ✓');
   };
   function paintCardio(){
     var el=document.getElementById('cardio-list');if(!el)return;el.innerHTML='';
@@ -312,7 +317,7 @@
   document.getElementById('journal').value=day.journal||'';
   document.getElementById('reading').value=day.reading||'';
 
-  var MTGT={cal:2500,p:150,f:83,c:288};
+  var MTGT={cal:2300,p:200,f:77,c:202};
   var mIds={cal:'m-cal',p:'m-p',f:'m-f',c:'m-c'};
   if(!day.macros)day.macros={cal:'',p:'',f:'',c:''};
   Object.keys(mIds).forEach(function(k){var el=document.getElementById(mIds[k]);el.value=day.macros[k]||'';el.addEventListener('input',function(){day.macros[k]=el.value;save();paintMacros();});});
@@ -324,22 +329,22 @@
     document.getElementById('pct-p').textContent=pp+'%';
     document.getElementById('pct-cal').textContent=cp+'%';
     bp.style.background=pp>=100?'var(--good,#3f7d52)':'var(--copper)';
-    bc.style.background=cp>110?'var(--ember)':'var(--copper)';
+    bc.style.background=cp>105?'var(--ember)':'var(--copper)';
   }
   paintMacros();
 
   var SPLIT={
-    'Push · form first':[['DB Bench Press','3×8–12'],['Seated DB Shoulder Press','3×10–12'],['Incline DB Press','3×10–12'],['Cable Lateral Raise','3×12–15'],['Triceps Pushdown','3×12–15'],['Plank','3×30–45s']],
-    'Pull · form first':[['Lat Pulldown','3×10–12'],['Chest-Supported Row','3×10–12'],['Seated Cable Row','3×10–12'],['Face Pulls','3×15'],['DB Curl','3×10–12'],['Hanging Knee Raise','3×10–12']],
-    'Legs · form first':[['Goblet Squat','3×10–12'],['Leg Press','3×12–15'],['DB RDL (light)','3×10–12'],['Leg Extension','3×12–15'],['Seated Leg Curl','3×12–15'],['Calf Raise','3×15']],
-    'Full Body':[['Goblet Squat','3×10'],['DB Bench','3×10'],['Lat Pulldown','3×10'],['DB RDL (light)','3×10'],['Plank','3×40s']],
-    'Rest / Active':[['Walk, bike, or sport','30–45 min']]
+    'Upper A · push':[['DB Bench Press','4×8–10'],['Incline DB Press','3×10–12'],['Machine Shoulder Press','3×10–12'],['Cable Lateral Raise','3×12–15'],['Triceps Pushdown','3×12–15'],['Cable Row','3×10–12']],
+    'Lower A · hip-safe':[['Leg Press (controlled ROM)','4×10–12'],['Leg Extension','3×12–15'],['Seated Leg Curl','3×12–15'],['Hip Thrust','3×10–12'],['Hip Abduction','3×15'],['Standing Calf Raise','4×12–15']],
+    'Upper B · pull':[['Lat Pulldown','4×10–12'],['Chest-Supported Row','3×10–12'],['Seated DB Shoulder Press','3×10–12'],['Face Pulls','3×15'],['DB Curl','3×10–12'],['Rope Pushdown','3×12–15']],
+    'Lower B · hip-safe':[['Hack Squat (controlled)','4×10–12'],['Back Extension (machine)','3×12–15'],['Leg Extension','3×12–15'],['Lying Leg Curl','3×12–15'],['Seated Calf Raise','4×15'],['Pallof Press','3×10/side']],
+    'Zone 2 / Recovery':[['Bike or incline walk','30–40 min']]
   };
   var sel=document.getElementById('wk-day');
   Object.keys(SPLIT).forEach(function(k){var o=document.createElement('option');o.textContent=k;sel.appendChild(o);});
   window.renderWorkout=function(){
     var ex=SPLIT[sel.value],box=document.getElementById('wk-log');box.innerHTML='';
-    document.getElementById('wk-hint').textContent='Tap an exercise name to swap it — your sets × reps stay the same. Form first, leave 2 reps in the tank.';
+    document.getElementById('wk-hint').textContent='Tap an exercise name to swap it — your sets × reps stay the same. Enter what you actually hit.';
     ex.forEach(function(pair,i){
       var key=sel.value+'#'+i;
       var nm=db.subs[key]||pair[0];
@@ -400,15 +405,15 @@
   };
 
   window.exportAll=function(){
-    var L=['APEX — MAX — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
+    var L=['APEX — JOSH — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
     L.push('WEIGH-INS:');db.weights.forEach(function(x){L.push('  '+x.date+': '+x.w+' lb');});
     L.push('','WORKOUTS:');db.workouts.forEach(function(w){L.push('  '+w.date+' '+w.day+': '+w.sets.join(' · '));});
-    L.push('','ACTIVITY:');db.cardio.forEach(function(c){L.push('  '+c.date+': '+c.type+' '+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':''));});
-    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+(d.water||0)+' oz'+(d.steps?' · steps '+d.steps:'')+' · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 2500 / 150P 83F 288C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
+    L.push('','CARDIO:');db.cardio.forEach(function(c){L.push('  '+c.date+': '+c.type+' '+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':''));});
+    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+(d.water||0)+' oz'+(d.steps?' · steps '+d.steps:'')+' · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 2300 / 200P 77F 202C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
     L.push('','Photos added: '+db.photos);
     var txt=L.join('\n');
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast('Copied — send to coach');},dl);}else dl();
-    function dl(){var b=new Blob([txt],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='apex-max-logs.txt';a.click();toast('Downloaded ✓');}
+    function dl(){var b=new Blob([txt],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='apex-josh-logs.txt';a.click();toast('Downloaded ✓');}
   };
 
   var tt=document.getElementById('toast');
