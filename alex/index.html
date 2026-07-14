@@ -77,6 +77,14 @@
   .filebtn{display:block;text-align:center;border:2px dashed var(--copper);border-radius:14px;padding:22px;color:var(--copper-deep);font-weight:600;cursor:pointer;background:var(--tint);}
   .filebtn input{display:none;}
   .note{font-size:12.5px;color:var(--ink-soft);margin:10px 0;}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .mgrid label{font-size:13px;margin-bottom:4px;}
+  .mgrid .tgt{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:inline-block;margin-top:5px;}
+  .pbar{display:flex;align-items:center;gap:10px;margin:8px 0;}
+  .pbar>span{width:54px;font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--ink-soft);}
+  .pbar b{width:42px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px;}
+  .ptrack{flex:1;height:9px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .ptrack i{display:block;height:100%;width:0;border-radius:999px;background:var(--copper);transition:width .3s;}
   .nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(env(safe-area-inset-bottom) + 6px);z-index:30;max-width:520px;margin:0 auto;}
   .nav button{flex:1;background:none;border:none;padding:8px 2px;cursor:pointer;color:var(--ink-soft);font-family:var(--sans);font-size:10.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;}
   .nav button svg{width:22px;height:22px;}
@@ -114,8 +122,18 @@
     <h2>Water</h2>
     <div class="card"><div class="row" style="justify-content:space-between"><span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 12</span></span><div class="row"><button class="round" onclick="water(-1)">−</button><button class="round" onclick="water(1)">+</button></div></div><div class="water" id="water-drops"></div></div>
 
-    <h2>Food</h2>
-    <div class="card"><textarea id="food" placeholder="What did you eat? Protein first."></textarea></div>
+    <h2>Food &amp; macros hit</h2>
+    <div class="card">
+      <div class="mgrid">
+        <div><label>Calories</label><input type="number" id="m-cal" inputmode="numeric" placeholder="0"><span class="tgt">/ 3,230</span></div>
+        <div><label>Protein (g)</label><input type="number" id="m-p" inputmode="numeric" placeholder="0"><span class="tgt">/ 150</span></div>
+        <div><label>Fat (g)</label><input type="number" id="m-f" inputmode="numeric" placeholder="0"><span class="tgt">/ 97</span></div>
+        <div><label>Carbs (g)</label><input type="number" id="m-c" inputmode="numeric" placeholder="0"><span class="tgt">/ 439</span></div>
+      </div>
+      <div class="pbar"><span>Protein</span><div class="ptrack"><i id="bar-p"></i></div><b id="pct-p">0%</b></div>
+      <div class="pbar"><span>Calories</span><div class="ptrack"><i id="bar-cal"></i></div><b id="pct-cal">0%</b></div>
+      <textarea id="food" placeholder="Notes on meals (optional)" style="margin-top:12px"></textarea>
+    </div>
 
     <h2>Journal · Reading · Day in review</h2>
     <div class="card">
@@ -223,6 +241,22 @@
   document.getElementById('journal').value=day.journal||'';
   document.getElementById('reading').value=day.reading||'';
 
+  var MTGT={cal:3230,p:150,f:97,c:439};
+  var mIds={cal:'m-cal',p:'m-p',f:'m-f',c:'m-c'};
+  if(!day.macros)day.macros={cal:'',p:'',f:'',c:''};
+  Object.keys(mIds).forEach(function(k){var el=document.getElementById(mIds[k]);el.value=day.macros[k]||'';el.addEventListener('input',function(){day.macros[k]=el.value;save();paintMacros();});});
+  function paintMacros(){
+    var p=+day.macros.p||0,cal=+day.macros.cal||0;
+    var pp=Math.round(p/MTGT.p*100),cp=Math.round(cal/MTGT.cal*100);
+    var bp=document.getElementById('bar-p'),bc=document.getElementById('bar-cal');
+    bp.style.width=Math.min(100,pp)+'%';bc.style.width=Math.min(100,cp)+'%';
+    document.getElementById('pct-p').textContent=pp+'%';
+    document.getElementById('pct-cal').textContent=cp+'%';
+    bp.style.background=pp>=100?'var(--good,#3f7d52)':'var(--copper)';
+    bc.style.background=cp>105?'var(--ember)':'var(--copper)';
+  }
+  paintMacros();
+
   var SPLIT={
     'Push A':[['Barbell Bench','4×6–8'],['Incline DB Press','3×8–12'],['Shoulder Press','3×8–12'],['Lateral Raise','3×12–15'],['Triceps Pushdown','3×10–15'],['Overhead Triceps Ext.','2×12–15']],
     'Pull A':[['Pull-ups / Pulldown','4×6–10'],['Barbell Row','3×8–10'],['Chest-Supported Row','3×10–12'],['Face Pulls','3×15'],['EZ-Bar Curl','3×8–12'],['Incline DB Curl','2×12–15']],
@@ -295,7 +329,7 @@
     var L=['APEX — ALEX — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
     L.push('WEIGH-INS:');db.weights.forEach(function(x){L.push('  '+x.date+': '+x.w+' lb');});
     L.push('','WORKOUTS:');db.workouts.forEach(function(w){L.push('  '+w.date+' '+w.day+': '+w.sets.join(' · '));});
-    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+d.water+'/12 · rating '+(d.rating||'-')+'/5');if(d.food)L.push('    food: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
+    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+d.water+'/12 · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 3230 / 150P 97F 439C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
     L.push('','Photos added: '+db.photos);
     var txt=L.join('\n');
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast('Copied — send to coach');},dl);}else dl();
