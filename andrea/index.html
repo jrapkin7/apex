@@ -1,0 +1,412 @@
+<title>Apex — Andrea</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<style>
+  :root{
+    --paper:#FAF7F0;--ground:#EFE9DB;--ink:#1A1B20;--ink-soft:#5c5d66;
+    --copper:#B85C2A;--copper-deep:#8f4720;--ember:#D9552E;--tint:#f4e7dc;
+    --line:#ddd4c4;--good:#3f7d52;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --paper:#1c1e23;--ground:#131418;--ink:#f0ece2;--ink-soft:#9a9ba6;
+    --copper:#E08A5A;--copper-deep:#c9703c;--ember:#E4653A;--tint:#241d18;
+    --line:#2c2e35;--good:#6fb587;
+  }}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%;}
+  .app{max-width:520px;margin:0 auto;min-height:100vh;padding:0 0 90px;}
+  .top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 12px) 18px 12px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:8px;}
+  .brand b{font-family:var(--mono);text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--copper);}
+  .brand span{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);}
+  .top .who{font-family:var(--mono);font-size:11px;color:var(--ink-soft);}
+  .screen{display:none;padding:16px 16px 0;}
+  .screen.on{display:block;}
+  h1{font-size:23px;margin:2px 0 3px;letter-spacing:-.3px;}
+  .date{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
+  h2{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--copper);margin:24px 0 8px;display:flex;align-items:center;gap:8px;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0;}
+  label{display:block;font-weight:600;font-size:14px;margin:0 0 6px;}
+  input,textarea,select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--ground);border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--copper);background:var(--paper);}
+  textarea{min-height:70px;resize:vertical;}
+  .row{display:flex;gap:10px;align-items:center;}
+  .big{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+  .btn{font:inherit;font-weight:700;font-size:16px;border:none;border-radius:14px;padding:15px;width:100%;cursor:pointer;background:var(--ember);color:#fff;box-shadow:0 8px 20px -10px var(--ember);}
+  .btn:active{transform:translateY(1px);}
+  .btn.ghost{background:var(--ground);color:var(--ink);border:1.5px solid var(--line);box-shadow:none;}
+  .round{width:52px;height:52px;flex:none;border-radius:14px;border:1.5px solid var(--line);background:var(--ground);font-size:24px;font-weight:700;color:var(--copper);cursor:pointer;}
+  .macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .mac{background:var(--tint);border-radius:12px;padding:11px 5px;text-align:center;}
+  .mac b{display:block;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .mac span{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);}
+  .ex{border-top:1px solid var(--line);padding:13px 0;}
+  .ex:first-child{border-top:none;}
+  .ex .name{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .ex .rx{font-family:var(--mono);font-size:11px;color:var(--copper-deep);background:var(--tint);padding:2px 7px;border-radius:6px;white-space:nowrap;}
+  .ex .sets{display:flex;gap:8px;}
+  .ex .sets input{text-align:center;padding:11px 6px;}
+  .ex .lab{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);display:block;text-align:center;margin-bottom:3px;letter-spacing:.04em;}
+  details{border:1px solid var(--line);border-radius:12px;margin:8px 0;overflow:hidden;}
+  summary{list-style:none;cursor:pointer;padding:13px 15px;font-weight:600;font-size:14.5px;background:var(--tint);display:flex;justify-content:space-between;}
+  summary::-webkit-details-marker{display:none;}
+  .plan table{width:100%;border-collapse:collapse;font-size:14px;}
+  .plan td{padding:9px 15px;border-top:1px solid var(--line);}
+  .plan td.s{color:var(--copper-deep);font-weight:600;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  ul.c{list-style:none;padding:0;margin:6px 0;}
+  ul.c li{padding:8px 0 8px 26px;position:relative;border-top:1px solid var(--line);font-size:14px;}
+  ul.c li:first-child{border-top:none;}
+  ul.c li:before{content:"";position:absolute;left:0;top:11px;width:13px;height:13px;border:2px solid var(--copper);border-radius:4px;}
+  .m{color:var(--ink-soft);}
+  .callout{background:var(--tint);border-radius:12px;padding:13px 15px;font-size:13px;margin:10px 0;}
+  .callout b{color:var(--copper-deep);}
+  .wlist div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:14px;}
+  .wlist div:first-child{border-top:none;}
+  .wlist b{font-variant-numeric:tabular-nums;}
+  .spark{height:60px;width:100%;}
+  .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+  .thumbs img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid var(--line);}
+  .filebtn{display:block;text-align:center;border:2px dashed var(--copper);border-radius:14px;padding:22px;color:var(--copper-deep);font-weight:600;cursor:pointer;background:var(--tint);}
+  .filebtn input{display:none;}
+  .note{font-size:12.5px;color:var(--ink-soft);margin:10px 0;}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .mgrid label{font-size:13px;margin-bottom:4px;}
+  .mgrid .tgt{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:inline-block;margin-top:5px;}
+  .pbar{display:flex;align-items:center;gap:10px;margin:8px 0;}
+  .pbar>span{width:54px;font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--ink-soft);}
+  .pbar b{width:42px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px;}
+  .ptrack{flex:1;height:9px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .ptrack i{display:block;height:100%;width:0;border-radius:999px;background:var(--copper);transition:width .3s;}
+  .nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(env(safe-area-inset-bottom) + 6px);z-index:30;max-width:520px;margin:0 auto;}
+  .nav button{flex:1;background:none;border:none;padding:8px 2px;cursor:pointer;color:var(--ink-soft);font-family:var(--sans);font-size:10.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;}
+  .nav button svg{width:22px;height:22px;}
+  .nav button.on{color:var(--copper);}
+  .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(16px);background:var(--good);color:#fff;padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:40;}
+  .toast.show{opacity:1;transform:translateX(-50%);}
+</style>
+
+<div class="app">
+  <div class="top">
+    <div class="brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.4"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg><b>Apex</b><span>·&nbsp;Andrea</span></div>
+    <div class="who">Strong &amp; back-safe</div>
+  </div>
+
+  <!-- TODAY -->
+  <div class="screen on" id="s-today">
+    <div class="date" id="today-date">TODAY</div>
+    <h1>Today's plan</h1>
+
+    <h2>Your targets today</h2>
+    <div class="card"><div class="macros"><div class="mac"><b>2,340</b><span>cal</span></div><div class="mac"><b>132g</b><span>protein</span></div><div class="mac"><b>70g</b><span>fat</span></div><div class="mac"><b>295g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">Build lean muscle at a steady weight. Progress shows in <b>strength &amp; measurements,</b> not just the scale.</div></div>
+
+    <h2>Today's workout — log as you go</h2>
+    <div class="card">
+      <label>Which day are you training?</label>
+      <select id="wk-day" onchange="renderWorkout()" style="margin-bottom:6px"></select>
+      <div class="note" style="margin-top:4px" id="wk-hint"></div>
+      <div id="wk-log"></div>
+      <button class="btn ghost" style="margin-top:12px" onclick="saveWorkout()">Save workout ✓</button>
+    </div>
+
+    <h2>Morning weigh-in</h2>
+    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Fasted, after the bathroom.</div></div>
+
+    <h2>Water</h2>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;align-items:flex-end">
+        <span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 100 oz</span></span>
+        <div class="row" style="gap:6px">
+          <button class="round" onclick="water(-8)">−</button>
+          <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(8)">+8</button>
+          <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(16)">+16</button>
+          <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(24)">+24</button>
+        </div>
+      </div>
+      <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="water-bar"></i></div></div>
+      <div class="note" style="margin-bottom:0">Target 100 oz. +8 glass · +16 bottle · +24 big bottle.</div>
+    </div>
+
+    <h2>Steps</h2>
+    <div class="card">
+      <div class="row"><input type="number" id="steps" inputmode="numeric" placeholder="steps today"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveSteps()">Log</button></div>
+      <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="steps-bar"></i></div><b id="steps-pct">0%</b></div>
+      <div class="note" style="margin-bottom:0">Target 10,000/day. Auto-syncs from your Oura ring once wearables are connected.</div>
+    </div>
+
+    <h2>Cardio</h2>
+    <div class="card">
+      <select id="cardio-type"><option>Zone 2 walk</option><option>Incline walk</option><option>Bike</option><option>Elliptical</option><option>Swim</option><option>Other (low-impact)</option></select>
+      <div class="row" style="margin-top:10px;gap:10px"><div style="flex:1"><label>minutes</label><input type="number" id="cardio-min" inputmode="numeric" placeholder="min"></div><div style="flex:1"><label>distance <span class="m">(opt)</span></label><input type="number" id="cardio-dist" inputmode="decimal" placeholder="mi"></div></div>
+      <button class="btn ghost" style="margin-top:12px" onclick="saveCardio()">Log cardio ✓</button>
+      <div class="wlist" id="cardio-list" style="margin-top:10px"></div>
+    </div>
+
+    <h2>Food &amp; macros hit</h2>
+    <div class="card">
+      <div class="mgrid">
+        <div><label>Calories</label><input type="number" id="m-cal" inputmode="numeric" placeholder="0"><span class="tgt">/ 2,340</span></div>
+        <div><label>Protein (g)</label><input type="number" id="m-p" inputmode="numeric" placeholder="0"><span class="tgt">/ 132</span></div>
+        <div><label>Fat (g)</label><input type="number" id="m-f" inputmode="numeric" placeholder="0"><span class="tgt">/ 70</span></div>
+        <div><label>Carbs (g)</label><input type="number" id="m-c" inputmode="numeric" placeholder="0"><span class="tgt">/ 295</span></div>
+      </div>
+      <div class="pbar"><span>Protein</span><div class="ptrack"><i id="bar-p"></i></div><b id="pct-p">0%</b></div>
+      <div class="pbar"><span>Calories</span><div class="ptrack"><i id="bar-cal"></i></div><b id="pct-cal">0%</b></div>
+      <textarea id="food" placeholder="Notes on meals (optional)" style="margin-top:12px"></textarea>
+    </div>
+
+    <h2>Journal · Reading · Day in review</h2>
+    <div class="card">
+      <label>How did today go? (1–5)</label>
+      <div class="row" id="rating" style="gap:8px;margin-bottom:12px"></div>
+      <label>Journal</label><textarea id="journal" placeholder="Wins, struggles, one lesson…"></textarea>
+      <label style="margin-top:12px">Reading / learning</label><input id="reading" placeholder="What did you read today?">
+    </div>
+
+    <button class="btn" onclick="saveDay()">Save today ✓</button>
+    <div style="height:12px"></div>
+    <button class="btn ghost" onclick="exportAll()">Send my logs to coach</button>
+    <div style="height:18px"></div>
+  </div>
+
+  <!-- PLAN -->
+  <div class="screen" id="s-plan">
+    <div class="date">YOUR FULL PROGRAM · WEEK 1</div>
+    <h1>Build strength &amp; shape — back-safe</h1>
+    <p class="note">Strong glutes, quads and core, built with a spine-smart plan that works around your L4/L5. No heavy spinal loading, no running or HIIT. Progress comes from clean reps and steady, controlled overload.</p>
+
+    <div class="callout"><b>Back-safe rules:</b> no back squats, deadlifts, barbell rows, or loaded spinal flexion. Brace your core, keep loads supported, and stop any set that pinches or radiates. Get your doctor's clearance before loading — you're on Ketorolac and 2 years post-discectomy.</div>
+
+    <h2>Daily macro targets</h2>
+    <div class="card"><div class="macros"><div class="mac"><b>2,340</b><span>cal</span></div><div class="mac"><b>132g</b><span>protein</span></div><div class="mac"><b>70g</b><span>fat</span></div><div class="mac"><b>295g</b><span>carbs</span></div></div></div>
+
+    <h2>Training — back-safe, 5 days</h2>
+    <div class="plan">
+      <details open><summary>Lower A · glutes</summary><table><tr><td>Machine / Barbell Hip Thrust</td><td class="s">4×8–12</td></tr><tr><td>Leg Press (feet high)</td><td class="s">3×10–12</td></tr><tr><td>Cable Glute Kickback</td><td class="s">3×12–15</td></tr><tr><td>Seated Leg Curl</td><td class="s">3×10–12</td></tr><tr><td>Hip Abduction Machine</td><td class="s">3×15–20</td></tr><tr><td>Pallof Press</td><td class="s">3×10/side</td></tr></table></details>
+      <details><summary>Upper A · back·chest·shoulders</summary><table><tr><td>Chest-Supported Row</td><td class="s">4×10–12</td></tr><tr><td>Lat Pulldown</td><td class="s">3×10–12</td></tr><tr><td>Incline DB Press</td><td class="s">3×8–12</td></tr><tr><td>Seated DB Shoulder Press</td><td class="s">3×10–12</td></tr><tr><td>Face Pulls</td><td class="s">3×15</td></tr><tr><td>Triceps Pushdown</td><td class="s">3×12–15</td></tr></table></details>
+      <details><summary>Lower B · quads</summary><table><tr><td>Hack Squat (supported)</td><td class="s">4×8–12</td></tr><tr><td>Leg Press</td><td class="s">3×12–15</td></tr><tr><td>Bulgarian Split Squat (upright)</td><td class="s">3×8–10/leg</td></tr><tr><td>Leg Extension</td><td class="s">3×12–15</td></tr><tr><td>Standing Calf Raise</td><td class="s">4×12–15</td></tr><tr><td>Dead Bug</td><td class="s">3×10/side</td></tr></table></details>
+      <details><summary>Upper B / Glutes + Core</summary><div style="padding:12px 15px;font-size:13.5px" class="m">Day 4 (Upper B): Seated Cable Row, Close-Grip Pulldown, Flat DB Press, Cable Lateral Raise, Cable Curl, Rope Pushdown. Day 5 (Glutes + Core): Hip Thrust, Cable Kickback, Hip Abduction, Bird-Dog, Plank, Pallof Press.</div></details>
+    </div>
+    <div class="callout"><b>Progression rule:</b> hit the top of the rep range with clean, braced form → next time add a rep or a small load bump. Never trade form for weight. Log every set on the Today tab.</div>
+
+    <h2>Cardio &amp; zones</h2>
+    <ul class="c"><li><b>Zone 2, low-impact only</b> — 2–3×/wk, 20–30 min <span class="m">(walk, incline walk, bike, elliptical, swim). Easy, conversational pace.</span></li><li><b>No running, HIIT, or jumping</b> <span class="m">— protects the disc. Steady low-impact does the job.</span></li></ul>
+
+    <h2>Nutrition — hit your targets</h2>
+    <ul class="c"><li><b>Breakfast:</b> <span class="m">Greek yogurt + berries + granola + scoop whey (~35P).</span></li><li><b>Lunch:</b> <span class="m">chicken or salmon + quinoa/rice + big salad + olive oil (~45P).</span></li><li><b>Dinner:</b> <span class="m">family dinner — 1–2 palms protein, 1–2 cupped carbs, veg.</span></li><li><b>Snacks:</b> <span class="m">cottage cheese + fruit, protein shake, hummus + veggies.</span></li></ul>
+
+    <h2>Documentation — daily</h2>
+    <ul class="c"><li><b>Day-1 photos + measurements today.</b></li><li><b>Morning weigh-in</b> every day (Today tab).</li><li><b>30–60 sec diary video</b> daily.</li><li><b>Note any back sensations</b> in the journal.</li><li><b>Weekly:</b> photos, measurements (waist/hips/thigh), 3-min recap.</li></ul>
+
+    <h2>Supplements</h2>
+    <ul class="c"><li>Creatine 5g/day · Whey · Vitamin D3 · Fish oil · Magnesium <span class="m">(clear with your doctor first — especially alongside Ketorolac).</span></li></ul>
+    <div style="height:18px"></div>
+  </div>
+
+  <!-- FUEL -->
+  <div class="screen" id="s-fuel">
+    <div class="date">FUEL · MEAL IDEAS &amp; PREP</div>
+    <h1>Hit 2,340 cal · 132g protein</h1>
+    <p class="note">A plug-and-play day. Mix and match — each block lists rough macros so you can swap freely and still land your targets. Log what you actually eat on the Today tab.</p>
+
+    <h2>A full day that hits your macros</h2>
+    <div class="plan">
+      <details open><summary>Breakfast · ~470 cal / 35P</summary><table><tr><td>Greek yogurt + berries + granola + scoop whey</td><td class="s">35P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: 3-egg veggie omelet + 1 slice toast</td><td class="s">28P</td></tr></table></details>
+      <details><summary>Lunch · ~620 cal / 45P</summary><table><tr><td>Chicken or salmon + ¾ cup quinoa/rice + big salad + olive oil</td><td class="s">45P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: turkey + hummus wrap + veggies</td><td class="s">38P</td></tr></table></details>
+      <details><summary>Dinner (family meal) · ~640 cal / 38P</summary><table><tr><td>1–2 palms protein + 1–2 cupped carbs + veg</td><td class="s">38P</td></tr><tr><td class="m" style="font-size:12.5px">Eat the family dinner — right-sized portion</td><td class="s">—</td></tr></table></details>
+      <details><summary>Snacks &amp; fill · ~610 cal / 25P</summary><table><tr><td>Cottage cheese + fruit</td><td class="s">14P</td></tr><tr><td>Protein shake</td><td class="s">25P</td></tr><tr><td>Hummus + veggies / handful of nuts</td><td class="s">—</td></tr></table></details>
+    </div>
+    <div class="callout"><b>Rule of thumb:</b> protein first at every meal (aim 30g+). Judge progress by strength and measurements, not just the scale — you're building muscle at a steady weight.</div>
+
+    <h2>Grocery staples to prep ahead</h2>
+    <ul class="c">
+      <li><b>Protein:</b> <span class="m">chicken, salmon, eggs, Greek yogurt, cottage cheese, whey, lean turkey.</span></li>
+      <li><b>Carbs:</b> <span class="m">quinoa, rice, oats, potatoes, berries, fruit, granola.</span></li>
+      <li><b>Fats:</b> <span class="m">olive oil, avocado, nuts, seeds, whole eggs.</span></li>
+      <li><b>Prep once:</b> <span class="m">batch-cook chicken + a grain + wash/chop salad and veg on Sunday — lunches handled all week.</span></li>
+    </ul>
+
+    <div class="callout" style="background:var(--ground)"><b>Coming soon:</b> a searchable food tracker — type or scan a food and it auto-fills the macros into your Today log. For now, use the numbers above and enter your daily totals on the Today tab.</div>
+    <div style="height:18px"></div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="screen" id="s-prog">
+    <div class="date">PROGRESS</div>
+    <h1>Your trend</h1>
+    <h2>Body weight</h2>
+    <div class="card"><canvas class="spark" id="spark"></canvas><div class="wlist" id="weight-list"></div></div>
+    <h2>Saved workouts</h2>
+    <div class="card"><div class="wlist" id="wk-history"><div class="m" style="border:none">No workouts saved yet.</div></div></div>
+    <div style="height:18px"></div>
+  </div>
+
+  <!-- PHOTOS -->
+  <div class="screen" id="s-photos">
+    <div class="date">PHOTOS</div>
+    <h1>Progress photos</h1>
+    <p class="note">Front / side / back, relaxed &amp; flexed. Same spot, light, morning, fasted. Take your <b>Day-1 set today.</b></p>
+    <label class="filebtn">＋ Add photos from your camera roll<input type="file" accept="image/*" multiple id="photo-in"></label>
+    <div class="thumbs" id="thumbs"></div>
+    <p class="note">These preview here and stay in your camera roll. When the full app is live, they'll upload and store on your profile automatically.</p>
+    <div style="height:18px"></div>
+  </div>
+
+  <div class="nav">
+    <button class="on" data-s="today" onclick="go('today')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9" stroke-linecap="round"/></svg>Today</button>
+    <button data-s="plan" onclick="go('plan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg>Program</button>
+    <button data-s="fuel" onclick="go('fuel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v7a3 3 0 006 0V3M8 3v18M18 3c-1.5 0-3 2-3 6s1.5 5 3 5v7"/></svg>Fuel</button>
+    <button data-s="prog" onclick="go('prog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 15l4-4 4 3 8-8" stroke-linecap="round" stroke-linejoin="round"/></svg>Progress</button>
+    <button data-s="photos" onclick="go('photos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>Photos</button>
+  </div>
+</div>
+<div class="toast" id="toast">Saved ✓</div>
+
+<script>
+(function(){
+  var KEY='apex_andrea_v2';
+  var db=JSON.parse(localStorage.getItem(KEY)||'{}');
+  if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0; if(!db.cardio)db.cardio=[];
+  function save(){localStorage.setItem(KEY,JSON.stringify(db));}
+  function tkey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  var TODAY=tkey();
+  document.getElementById('today-date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'}).toUpperCase();
+  var day=db.days[TODAY]||{water:0,food:'',journal:'',reading:'',rating:0};
+  db.days[TODAY]=day;
+
+  window.go=function(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s);});document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on',b.dataset.s===s);});window.scrollTo(0,0);if(s==='prog')drawSpark();};
+
+  var WGOAL=100;
+  if(day.water>0&&day.water<=12)day.water=day.water*8;
+  function paintWater(){var oz=day.water||0;document.getElementById('water-n').textContent=oz;document.getElementById('water-bar').style.width=Math.min(100,Math.round(oz/WGOAL*100))+'%';}
+  window.water=function(n){day.water=Math.max(0,(day.water||0)+n);save();paintWater();};
+  paintWater();
+
+  var SGOAL=10000;
+  document.getElementById('steps').value=day.steps||'';
+  function paintSteps(){var s=+day.steps||0,p=Math.round(s/SGOAL*100);document.getElementById('steps-bar').style.width=Math.min(100,p)+'%';document.getElementById('steps-pct').textContent=p+'%';}
+  window.saveSteps=function(){day.steps=document.getElementById('steps').value;save();paintSteps();toast('Steps logged ✓');};
+  paintSteps();
+
+  window.saveCardio=function(){
+    var t=document.getElementById('cardio-type').value,m=document.getElementById('cardio-min').value,di=document.getElementById('cardio-dist').value;
+    if(!m&&!di){toast('Enter minutes');return;}
+    db.cardio.unshift({date:TODAY,type:t,min:m,dist:di});save();paintCardio();
+    document.getElementById('cardio-min').value='';document.getElementById('cardio-dist').value='';toast('Cardio logged ✓');
+  };
+  function paintCardio(){
+    var el=document.getElementById('cardio-list');if(!el)return;el.innerHTML='';
+    db.cardio.slice(0,6).forEach(function(c){var d=document.createElement('div');d.innerHTML='<span class="m">'+c.date+' · '+c.type+'</span><b>'+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':'')+'</b>';el.appendChild(d);});
+  }
+  paintCardio();
+
+  var rc=document.getElementById('rating');
+  for(var r=1;r<=5;r++){(function(v){var b=document.createElement('button');b.className='round';b.style.flex='1';b.textContent=v;b.onclick=function(){day.rating=v;save();paintRating();};rc.appendChild(b);})(r);}
+  function paintRating(){[].forEach.call(rc.children,function(c,i){var on=(i+1)<=day.rating;c.style.background=on?'var(--copper)':'var(--ground)';c.style.color=on?'#fff':'var(--copper)';c.style.borderColor=on?'var(--copper)':'var(--line)';});}
+  paintRating();
+
+  document.getElementById('food').value=day.food||'';
+  document.getElementById('journal').value=day.journal||'';
+  document.getElementById('reading').value=day.reading||'';
+
+  var MTGT={cal:2340,p:132,f:70,c:295};
+  var mIds={cal:'m-cal',p:'m-p',f:'m-f',c:'m-c'};
+  if(!day.macros)day.macros={cal:'',p:'',f:'',c:''};
+  Object.keys(mIds).forEach(function(k){var el=document.getElementById(mIds[k]);el.value=day.macros[k]||'';el.addEventListener('input',function(){day.macros[k]=el.value;save();paintMacros();});});
+  function paintMacros(){
+    var p=+day.macros.p||0,cal=+day.macros.cal||0;
+    var pp=Math.round(p/MTGT.p*100),cp=Math.round(cal/MTGT.cal*100);
+    var bp=document.getElementById('bar-p'),bc=document.getElementById('bar-cal');
+    bp.style.width=Math.min(100,pp)+'%';bc.style.width=Math.min(100,cp)+'%';
+    document.getElementById('pct-p').textContent=pp+'%';
+    document.getElementById('pct-cal').textContent=cp+'%';
+    bp.style.background=pp>=100?'var(--good,#3f7d52)':'var(--copper)';
+    bc.style.background=cp>105?'var(--ember)':'var(--copper)';
+  }
+  paintMacros();
+
+  var SPLIT={
+    'Lower A · glutes':[['Machine / BB Hip Thrust','4×8–12'],['Leg Press (feet high)','3×10–12'],['Cable Glute Kickback','3×12–15'],['Seated Leg Curl','3×10–12'],['Hip Abduction','3×15–20'],['Pallof Press','3×10/side']],
+    'Upper A':[['Chest-Supported Row','4×10–12'],['Lat Pulldown','3×10–12'],['Incline DB Press','3×8–12'],['Seated DB Shoulder Press','3×10–12'],['Face Pulls','3×15'],['Triceps Pushdown','3×12–15']],
+    'Lower B · quads':[['Hack Squat (supported)','4×8–12'],['Leg Press','3×12–15'],['Bulgarian Split Squat','3×8–10/leg'],['Leg Extension','3×12–15'],['Standing Calf Raise','4×12–15'],['Dead Bug','3×10/side']],
+    'Upper B':[['Seated Cable Row','4×10–12'],['Close-Grip Pulldown','3×10–12'],['Flat DB Press','3×8–12'],['Cable Lateral Raise','3×12–15'],['Cable Curl','3×10–12'],['Rope Pushdown','3×12–15']],
+    'Glutes + Core':[['Hip Thrust','4×10–12'],['Cable Kickback','3×12–15'],['Hip Abduction','3×15–20'],['Bird-Dog','3×10/side'],['Plank','3×30–45s'],['Pallof Press','3×10/side']],
+    'Rest / Zone 2':[['Walk or bike (low-impact)','30–40 min']]
+  };
+  var sel=document.getElementById('wk-day');
+  Object.keys(SPLIT).forEach(function(k){var o=document.createElement('option');o.textContent=k;sel.appendChild(o);});
+  window.renderWorkout=function(){
+    var ex=SPLIT[sel.value],box=document.getElementById('wk-log');box.innerHTML='';
+    document.getElementById('wk-hint').textContent='Target sets × reps shown for each. Enter what you actually hit — form first, brace your core.';
+    ex.forEach(function(pair,i){
+      var wrap=document.createElement('div');wrap.className='ex';
+      wrap.innerHTML='<div class="name"><span>'+pair[0]+'</span><span class="rx">'+pair[1]+'</span></div><div class="sets"><div style="flex:1"><span class="lab">weight</span><input type="number" inputmode="decimal" data-f="w" placeholder="lb"></div><div style="flex:1"><span class="lab">reps</span><input type="number" inputmode="numeric" data-f="r" placeholder="reps"></div><div style="flex:1"><span class="lab">sets</span><input type="number" inputmode="numeric" data-f="s" placeholder="sets"></div></div>';
+      box.appendChild(wrap);
+    });
+  };
+  renderWorkout();
+  window.saveWorkout=function(){
+    var ex=SPLIT[sel.value],entries=[];
+    document.querySelectorAll('#wk-log .ex').forEach(function(el,i){
+      var w=el.querySelector('[data-f=w]').value,r=el.querySelector('[data-f=r]').value,s=el.querySelector('[data-f=s]').value;
+      if(w||r||s)entries.push(ex[i][0]+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb');
+    });
+    if(!entries.length){toast('Log at least one set');return;}
+    db.workouts.unshift({date:TODAY,day:sel.value,sets:entries});save();paintHistory();toast('Workout saved ✓');
+  };
+
+  window.saveWeight=function(){
+    var v=parseFloat(document.getElementById('weight').value);if(!v){toast('Enter a weight');return;}
+    db.weights=db.weights.filter(function(x){return x.date!==TODAY;});
+    db.weights.push({date:TODAY,w:v});db.weights.sort(function(a,b){return a.date<b.date?-1:1;});save();
+    paintWeights();document.getElementById('weight').value='';toast('Weight logged ✓');
+  };
+  function paintWeights(){
+    var el=document.getElementById('weight-list');el.innerHTML='';
+    db.weights.slice(-10).reverse().forEach(function(x){var d=document.createElement('div');d.innerHTML='<span class="m">'+x.date+'</span><b>'+x.w+' lb</b>';el.appendChild(d);});
+    if(!db.weights.length)el.innerHTML='<div class="m" style="border:none">No weigh-ins yet.</div>';
+  }
+  function paintHistory(){
+    var el=document.getElementById('wk-history');el.innerHTML='';
+    if(!db.workouts.length){el.innerHTML='<div class="m" style="border:none">No workouts saved yet.</div>';return;}
+    db.workouts.slice(0,15).forEach(function(w){var d=document.createElement('div');d.style.flexDirection='column';d.style.alignItems='flex-start';d.innerHTML='<b>'+w.day+' · <span class="m" style="font-weight:400">'+w.date+'</span></b><div class="m" style="font-size:13px;margin-top:4px">'+w.sets.join(' · ')+'</div>';el.appendChild(d);});
+  }
+  function drawSpark(){
+    var c=document.getElementById('spark');if(!c)return;var ctx=c.getContext('2d');var W=c.width=c.offsetWidth*2,H=c.height=120;
+    ctx.clearRect(0,0,W,H);var ws=db.weights.slice(-14);if(ws.length<2){ctx.fillStyle=getCss('--ink-soft');ctx.font='22px system-ui';ctx.fillText('Log a few weigh-ins to see your trend',20,60);return;}
+    var vals=ws.map(function(x){return x.w;}),mn=Math.min.apply(0,vals)-1,mx=Math.max.apply(0,vals)+1,rng=mx-mn||1;
+    ctx.strokeStyle=getCss('--copper');ctx.lineWidth=5;ctx.beginPath();
+    ws.forEach(function(x,i){var px=20+i*(W-40)/(ws.length-1),py=H-20-(x.w-mn)/rng*(H-40);i?ctx.lineTo(px,py):ctx.moveTo(px,py);});ctx.stroke();
+    var last=ws[ws.length-1];ctx.fillStyle=getCss('--ember');var lx=W-20,ly=H-20-(last.w-mn)/rng*(H-40);ctx.beginPath();ctx.arc(lx,ly,8,0,7);ctx.fill();
+  }
+  function getCss(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+
+  document.getElementById('photo-in').addEventListener('change',function(e){
+    var t=document.getElementById('thumbs');
+    [].forEach.call(e.target.files,function(f){var url=URL.createObjectURL(f);var img=document.createElement('img');img.src=url;t.appendChild(img);db.photos++;});
+    save();toast(e.target.files.length+' photo(s) added');
+  });
+
+  window.saveDay=function(){
+    day.food=document.getElementById('food').value;day.journal=document.getElementById('journal').value;day.reading=document.getElementById('reading').value;
+    save();toast('Today saved ✓');
+  };
+
+  window.exportAll=function(){
+    var L=['APEX — ANDREA — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
+    L.push('WEIGH-INS:');db.weights.forEach(function(x){L.push('  '+x.date+': '+x.w+' lb');});
+    L.push('','WORKOUTS:');db.workouts.forEach(function(w){L.push('  '+w.date+' '+w.day+': '+w.sets.join(' · '));});
+    L.push('','CARDIO:');db.cardio.forEach(function(c){L.push('  '+c.date+': '+c.type+' '+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':''));});
+    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+(d.water||0)+' oz'+(d.steps?' · steps '+d.steps:'')+' · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 2340 / 132P 70F 295C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
+    L.push('','Photos added: '+db.photos);
+    var txt=L.join('\n');
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast('Copied — send to coach');},dl);}else dl();
+    function dl(){var b=new Blob([txt],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='apex-andrea-logs.txt';a.click();toast('Downloaded ✓');}
+  };
+
+  var tt=document.getElementById('toast');
+  function toast(m){tt.textContent=m;tt.classList.add('show');setTimeout(function(){tt.classList.remove('show');},2200);}
+  paintWeights();paintHistory();
+})();
+</script>
