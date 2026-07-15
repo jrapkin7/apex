@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Apex — Alex</title>
+<title>Apex — Maddie</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <style>
   :root{
@@ -42,15 +42,10 @@
   .btn:active{transform:translateY(1px);}
   .btn.ghost{background:var(--ground);color:var(--ink);border:1.5px solid var(--line);box-shadow:none;}
   .round{width:52px;height:52px;flex:none;border-radius:14px;border:1.5px solid var(--line);background:var(--ground);font-size:24px;font-weight:700;color:var(--copper);cursor:pointer;}
-  .drop{width:30px;height:40px;border-radius:0 0 16px 16px/0 0 20px 20px;border:2px solid var(--line);border-top-left-radius:50%;border-top-right-radius:50%;background:var(--ground);cursor:pointer;}
-  .drop.full{background:var(--copper);border-color:var(--copper);}
-  .water{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
-  /* macro bar */
   .macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
   .mac{background:var(--tint);border-radius:12px;padding:11px 5px;text-align:center;}
   .mac b{display:block;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;}
   .mac span{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);}
-  /* today workout */
   .ex{border-top:1px solid var(--line);padding:13px 0;}
   .ex:first-child{border-top:none;}
   .ex .name{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;}
@@ -60,7 +55,6 @@
   .ex .sets{display:flex;gap:8px;}
   .ex .sets input{text-align:center;padding:11px 6px;}
   .ex .lab{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--ink-soft);display:block;text-align:center;margin-bottom:3px;letter-spacing:.04em;}
-  /* plan */
   details{border:1px solid var(--line);border-radius:12px;margin:8px 0;overflow:hidden;}
   summary{list-style:none;cursor:pointer;padding:13px 15px;font-weight:600;font-size:14.5px;background:var(--tint);display:flex;justify-content:space-between;}
   summary::-webkit-details-marker{display:none;}
@@ -74,6 +68,8 @@
   .m{color:var(--ink-soft);}
   .callout{background:var(--tint);border-radius:12px;padding:13px 15px;font-size:13px;margin:10px 0;}
   .callout b{color:var(--copper-deep);}
+  .prov{background:var(--copper);color:#fff;border-radius:12px;padding:11px 14px;font-size:12.5px;margin:12px 0;}
+  .prov b{color:#fff;}
   .wlist div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:14px;}
   .wlist div:first-child{border-top:none;}
   .wlist b{font-variant-numeric:tabular-nums;}
@@ -103,8 +99,8 @@
 
 <div class="app">
   <div class="top">
-    <div class="brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.4"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg><b>Apex</b><span>·&nbsp;Alex</span></div>
-    <div class="who">Build muscle</div>
+    <div class="brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--copper)" stroke-width="2.4"><path d="M12 2v20M2 12h20" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg><b>Apex</b><span>·&nbsp;Maddie</span></div>
+    <div class="who">Reset &amp; feel strong</div>
   </div>
 
   <!-- TODAY -->
@@ -112,10 +108,12 @@
     <div class="date" id="today-date">TODAY</div>
     <h1>Today's plan</h1>
 
-    <h2>Your targets today</h2>
-    <div class="card"><div class="macros"><div class="mac"><b>3,230</b><span>cal</span></div><div class="mac"><b>150g</b><span>protein</span></div><div class="mac"><b>97g</b><span>fat</span></div><div class="mac"><b>439g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">Modest surplus for lean muscle. Scale should trend <b>+¼–½ lb/week.</b></div></div>
+    <div class="prov"><b>Medical check first.</b> Based on what you shared, your doctor confirms this plan before it goes live. Everything here is built gentle on purpose — a sustainable pace, nourishing food, and low-impact movement.</div>
 
-    <h2>Today's workout — log as you go</h2>
+    <h2>Your targets today</h2>
+    <div class="card"><div class="macros"><div class="mac"><b>1,750</b><span>cal</span></div><div class="mac"><b>130g</b><span>protein</span></div><div class="mac"><b>62g</b><span>fat</span></div><div class="mac"><b>165g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">A <b>gentle</b> deficit, not a hard cut — enough fat for your hormones. This is about feeling like yourself again, at a pace your body's ready for.</div></div>
+
+    <h2>Today's movement — log as you go</h2>
     <div class="card">
       <label>Which day are you training?</label>
       <select id="wk-day" onchange="renderWorkout()" style="margin-bottom:6px"></select>
@@ -124,13 +122,13 @@
       <button class="btn ghost" style="margin-top:12px" onclick="saveWorkout()">Save workout ✓</button>
     </div>
 
-    <h2>Morning weigh-in</h2>
-    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Fasted, after the bathroom.</div></div>
+    <h2>Weigh-in</h2>
+    <div class="card"><div class="row"><input type="number" id="weight" inputmode="decimal" placeholder="lb" step="0.1"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveWeight()">Log</button></div><div class="note">Weekly is plenty. How your energy feels and how your clothes fit matter just as much as the number.</div></div>
 
     <h2>Water</h2>
     <div class="card">
       <div class="row" style="justify-content:space-between;align-items:flex-end">
-        <span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 120 oz</span></span>
+        <span class="big"><span id="water-n">0</span><span style="font-size:15px;color:var(--ink-soft)"> / 90 oz</span></span>
         <div class="row" style="gap:6px">
           <button class="round" onclick="water(-8)">−</button>
           <button class="btn ghost" style="width:auto;padding:11px 12px" onclick="water(8)">+8</button>
@@ -139,31 +137,31 @@
         </div>
       </div>
       <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="water-bar"></i></div></div>
-      <div class="note" style="margin-bottom:0">Target 120 oz (~1 gallon). +8 glass · +16 bottle · +24 big bottle.</div>
+      <div class="note" style="margin-bottom:0">Target 90 oz. +8 glass · +16 bottle · +24 big bottle.</div>
     </div>
 
     <h2>Steps</h2>
     <div class="card">
       <div class="row"><input type="number" id="steps" inputmode="numeric" placeholder="steps today"><button class="btn ghost" style="width:auto;padding:13px 20px" onclick="saveSteps()">Log</button></div>
       <div class="pbar" style="margin-top:14px"><div class="ptrack"><i id="steps-bar"></i></div><b id="steps-pct">0%</b></div>
-      <div class="note" style="margin-bottom:0">Target 10,000/day. Auto-syncs from your watch once wearables are connected.</div>
+      <div class="note" style="margin-bottom:0">Target 8,000/day. Walking is the quiet hero here — gentle on the body, great for inflammation and mood.</div>
     </div>
 
-    <h2>Cardio</h2>
+    <h2>Cardio &amp; walks</h2>
     <div class="card">
-      <select id="cardio-type"><option>Zone 2 walk</option><option>Bike</option><option>Incline treadmill</option><option>Run</option><option>Rower / elliptical</option><option>Sprints (Zone 4–5)</option><option>Other</option></select>
+      <select id="cardio-type"><option>Walk</option><option>Incline walk</option><option>Stationary bike</option><option>Elliptical</option><option>Yoga / mobility</option><option>Other (low-impact)</option></select>
       <div class="row" style="margin-top:10px;gap:10px"><div style="flex:1"><label>minutes</label><input type="number" id="cardio-min" inputmode="numeric" placeholder="min"></div><div style="flex:1"><label>distance <span class="m">(opt)</span></label><input type="number" id="cardio-dist" inputmode="decimal" placeholder="mi"></div></div>
-      <button class="btn ghost" style="margin-top:12px" onclick="saveCardio()">Log cardio ✓</button>
+      <button class="btn ghost" style="margin-top:12px" onclick="saveCardio()">Log walk ✓</button>
       <div class="wlist" id="cardio-list" style="margin-top:10px"></div>
     </div>
 
     <h2>Food &amp; macros hit</h2>
     <div class="card">
       <div class="mgrid">
-        <div><label>Calories</label><input type="number" id="m-cal" inputmode="numeric" placeholder="0"><span class="tgt">/ 3,230</span></div>
-        <div><label>Protein (g)</label><input type="number" id="m-p" inputmode="numeric" placeholder="0"><span class="tgt">/ 150</span></div>
-        <div><label>Fat (g)</label><input type="number" id="m-f" inputmode="numeric" placeholder="0"><span class="tgt">/ 97</span></div>
-        <div><label>Carbs (g)</label><input type="number" id="m-c" inputmode="numeric" placeholder="0"><span class="tgt">/ 439</span></div>
+        <div><label>Calories</label><input type="number" id="m-cal" inputmode="numeric" placeholder="0"><span class="tgt">/ 1,750</span></div>
+        <div><label>Protein (g)</label><input type="number" id="m-p" inputmode="numeric" placeholder="0"><span class="tgt">/ 130</span></div>
+        <div><label>Fat (g)</label><input type="number" id="m-f" inputmode="numeric" placeholder="0"><span class="tgt">/ 62</span></div>
+        <div><label>Carbs (g)</label><input type="number" id="m-c" inputmode="numeric" placeholder="0"><span class="tgt">/ 165</span></div>
       </div>
       <div class="pbar"><span>Protein</span><div class="ptrack"><i id="bar-p"></i></div><b id="pct-p">0%</b></div>
       <div class="pbar"><span>Calories</span><div class="ptrack"><i id="bar-cal"></i></div><b id="pct-cal">0%</b></div>
@@ -172,9 +170,9 @@
 
     <h2>Journal · Reading · Day in review</h2>
     <div class="card">
-      <label>How did today go? (1–5)</label>
+      <label>How did today feel? (1–5)</label>
       <div class="row" id="rating" style="gap:8px;margin-bottom:12px"></div>
-      <label>Journal</label><textarea id="journal" placeholder="Wins, struggles, one lesson…"></textarea>
+      <label>Journal</label><textarea id="journal" placeholder="Energy, mood, how your body felt today…"></textarea>
       <label style="margin-top:12px">Reading / learning</label><input id="reading" placeholder="What did you read today?">
     </div>
 
@@ -187,58 +185,59 @@
   <!-- PLAN -->
   <div class="screen" id="s-plan">
     <div class="date">YOUR FULL PROGRAM · WEEK 1</div>
-    <h1>Build muscle — lean bulk</h1>
-    <p class="note">You're 19 and lean — this is the best natural muscle-building window of your life. Eat in a controlled surplus, lift heavy and progressively, sleep, document everything.</p>
+    <h1>Rebuild strength — gentle &amp; sustainable</h1>
+    <p class="note">Built for where you are right now: strength, movement, and nourishing food to help you feel like yourself again and bring inflammation down. Nothing intense — a steady, kind pace, especially with a baby hopefully on the horizon.</p>
 
-    <h2>Daily macro targets</h2>
-    <div class="card"><div class="macros"><div class="mac"><b>3,230</b><span>cal</span></div><div class="mac"><b>150g</b><span>protein</span></div><div class="mac"><b>97g</b><span>fat</span></div><div class="mac"><b>439g</b><span>carbs</span></div></div></div>
+    <div class="prov"><b>Your doctor signs off first.</b> Based on what you shared, none of this loads in until your doctor gives the OK — and they may adjust the calories or movements to fit exactly where your body is right now.</div>
 
-    <h2>Training — Push / Pull / Legs ×2</h2>
+    <h2>Daily targets</h2>
+    <div class="card"><div class="macros"><div class="mac"><b>1,750</b><span>cal</span></div><div class="mac"><b>130g</b><span>protein</span></div><div class="mac"><b>62g</b><span>fat</span></div><div class="mac"><b>165g</b><span>carbs</span></div></div><div class="note" style="margin-bottom:0">A gentle ~230 cal/day deficit — steady fat loss without stressing your body. Protein holds your muscle; the fat supports your hormones. Not a crash diet.</div></div>
+
+    <h2>Training — home basics, 3–4 days</h2>
+    <div class="callout"><b>All bodyweight — no equipment needed.</b> Everything here you can do in your living room. Once a move feels easy, add a resistance band, light dumbbells, or even a couple of water bottles for a little more — totally optional.</div>
     <div class="plan">
-      <details open><summary>Push A · chest·shoulders·tri</summary><table><tr><td>Barbell Bench</td><td class="s">4×6–8</td></tr><tr><td>Incline DB Press</td><td class="s">3×8–12</td></tr><tr><td>Seated DB Shoulder Press</td><td class="s">3×8–12</td></tr><tr><td>Cable Lateral Raise</td><td class="s">3×12–15</td></tr><tr><td>Triceps Pushdown</td><td class="s">3×10–15</td></tr><tr><td>Overhead Triceps Ext.</td><td class="s">2×12–15</td></tr></table></details>
-      <details><summary>Pull A · back·biceps</summary><table><tr><td>Pull-ups / Lat Pulldown</td><td class="s">4×6–10</td></tr><tr><td>Barbell Row</td><td class="s">3×8–10</td></tr><tr><td>Chest-Supported Row</td><td class="s">3×10–12</td></tr><tr><td>Face Pulls</td><td class="s">3×15</td></tr><tr><td>EZ-Bar Curl</td><td class="s">3×8–12</td></tr><tr><td>Incline DB Curl</td><td class="s">2×12–15</td></tr></table></details>
-      <details><summary>Legs A · quads·hams·calves</summary><table><tr><td>Back Squat</td><td class="s">4×6–8</td></tr><tr><td>Romanian Deadlift</td><td class="s">3×8–10</td></tr><tr><td>Leg Press</td><td class="s">3×12–15</td></tr><tr><td>Seated Leg Curl</td><td class="s">3×10–12</td></tr><tr><td>Standing Calf Raise</td><td class="s">4×12–15</td></tr><tr><td>Hanging Leg Raise</td><td class="s">3×10–15</td></tr></table></details>
-      <details><summary>Push B · shoulders·chest·tri</summary><table><tr><td>Overhead Press</td><td class="s">4×6–8</td></tr><tr><td>Flat DB Press</td><td class="s">3×8–12</td></tr><tr><td>Incline Cable Fly</td><td class="s">3×12–15</td></tr><tr><td>DB Lateral Raise</td><td class="s">4×12–15</td></tr><tr><td>Dips</td><td class="s">3×8–12</td></tr><tr><td>Triceps Pushdown</td><td class="s">2×12–15</td></tr></table></details>
-      <details><summary>Pull B · back·biceps</summary><table><tr><td>Lat Pulldown</td><td class="s">4×8–12</td></tr><tr><td>One-Arm DB Row</td><td class="s">3×8–12</td></tr><tr><td>Seated Cable Row</td><td class="s">3×10–12</td></tr><tr><td>Rear-Delt Fly</td><td class="s">3×15</td></tr><tr><td>Preacher Curl</td><td class="s">3×10–12</td></tr><tr><td>Cable Curl</td><td class="s">2×12–15</td></tr></table></details>
-      <details><summary>Legs B · quads·hams·calves</summary><table><tr><td>Hack Squat</td><td class="s">4×8–10</td></tr><tr><td>Bulgarian Split Squat</td><td class="s">3×8–10/leg</td></tr><tr><td>Leg Extension</td><td class="s">3×12–15</td></tr><tr><td>Lying Leg Curl</td><td class="s">3×10–12</td></tr><tr><td>Seated Calf Raise</td><td class="s">4×15</td></tr><tr><td>Cable Crunch</td><td class="s">3×12–15</td></tr></table></details>
+      <details open><summary>Full Body A</summary><table><tr><td>Bodyweight Squat</td><td class="s">3×10–12</td></tr><tr><td>Glute Bridge</td><td class="s">3×12–15</td></tr><tr><td>Incline / Knee Push-up</td><td class="s">3×8–12</td></tr><tr><td>Standing Band or Towel Row</td><td class="s">3×12–15</td></tr><tr><td>Dead Bug</td><td class="s">3×10/side</td></tr><tr><td>Calf Raise</td><td class="s">3×15</td></tr></table></details>
+      <details><summary>Full Body B</summary><table><tr><td>Reverse Lunge</td><td class="s">3×8/leg</td></tr><tr><td>Single-Leg Glute Bridge</td><td class="s">3×10/side</td></tr><tr><td>Wall Push-up</td><td class="s">3×10–12</td></tr><tr><td>Bird-Dog</td><td class="s">3×10/side</td></tr><tr><td>Standing Side Leg Raise</td><td class="s">3×12/side</td></tr><tr><td>Wall Sit</td><td class="s">3×20–30s</td></tr></table></details>
+      <details><summary>Full Body C · glutes + core</summary><table><tr><td>Sumo Squat</td><td class="s">3×12–15</td></tr><tr><td>Glute Bridge March</td><td class="s">3×10/side</td></tr><tr><td>Quadruped Glute Kickback</td><td class="s">3×12/side</td></tr><tr><td>Side Plank (from knees)</td><td class="s">3×15–20s/side</td></tr><tr><td>Bird-Dog</td><td class="s">3×10/side</td></tr><tr><td>Standing Calf Raise</td><td class="s">3×15</td></tr></table></details>
     </div>
-    <div class="callout"><b>Progression rule:</b> hit the top of the rep range clean → next time add a rep or 2.5–5 lb. Log every set (do it on the Today tab).</div>
+    <div class="callout"><b>Core is deliberately gentle:</b> dead bugs, bird-dogs, side planks, Pallof presses — controlled, low-strain work. <b>No crunches, sit-ups, or breath-holding.</b> If anything feels off, stop and mention it to your coach or doctor.</div>
+    <div class="callout"><b>Pace:</b> leave 3–4 reps in the tank, breathe through every rep, and never grind. This is about consistency and feeling good, not pushing to failure. Rotate A → B → C across your 3–4 days.</div>
 
-    <h2>Cardio &amp; zones</h2>
-    <ul class="c"><li><b>Zone 2</b> — 2–3×/wk, 20–30 min easy <span class="m">(walk/bike, conversational pace). Heart health + recovery.</span></li><li><b>Zone 4–5 (optional)</b> — 1×/wk <span class="m">6 × 30-sec bike sprints. Builds VO₂.</span></li></ul>
+    <h2>Walking &amp; recovery</h2>
+    <ul class="c"><li><b>Daily walk</b> — 20–40 min, any pace <span class="m">(the single best thing for inflammation, mood, and gentle fat loss right now).</span></li><li><b>Sleep + stress</b> <span class="m">— protect your 7–8 hours; gentle yoga or mobility on off days.</span></li></ul>
 
-    <h2>Nutrition — hit your targets</h2>
-    <ul class="c"><li><b>Pre-workout:</b> <span class="m">eggs + a bagel with banana &amp; honey (~600 cal / 35P).</span></li><li><b>Post-workout lunch (biggest):</b> <span class="m">chicken + 1.5 cups rice + veg (~760 cal / 58P).</span></li><li><b>Dinner:</b> <span class="m">family dinner (protein + carb + veg) — 2 palms protein, 2–3 cupped carbs.</span></li><li><b>Evening:</b> <span class="m">protein Ninja Creami (~500 cal / 40P).</span></li><li><b>Fill:</b> <span class="m">Greek yogurt + berries &amp; honey to top up on big days.</span></li></ul>
+    <h2>Nutrition — nourish &amp; reduce inflammation</h2>
+    <ul class="c"><li><b>Protein every meal</b> <span class="m">— eggs, chicken, salmon, Greek yogurt (~30g each).</span></li><li><b>Anti-inflammatory foods</b> <span class="m">— leafy greens, berries, olive oil, fatty fish, nuts, turmeric, colorful veg.</span></li><li><b>Enough healthy fat</b> <span class="m">— avocado, olive oil, salmon, walnuts, flax (your hormones need it).</span></li><li><b>You cook most meals</b> <span class="m">— lean into that; whole foods over packaged.</span></li></ul>
 
-    <h2>Documentation — daily</h2>
-    <ul class="c"><li><b>Day-1 photos + measurements today.</b></li><li><b>Morning weigh-in</b> every day (Today tab).</li><li><b>30–60 sec diary video</b> daily.</li><li><b>Film one working set</b> each session.</li><li><b>Weekly:</b> photos, measurements, 3-min recap.</li></ul>
+    <h2>Documentation — weekly</h2>
+    <ul class="c"><li><b>Photos + measurements</b> weekly, not daily.</li><li><b>Journal how you feel</b> <span class="m">— energy, mood, bloating/inflammation, sleep.</span></li><li><b>Weigh in weekly</b> if it helps; skip it if it doesn't serve you.</li></ul>
 
     <h2>Supplements</h2>
-    <ul class="c"><li>Creatine 5g/day · Whey · Vitamin D3 · Fish oil <span class="m">(check with a doctor first).</span></li></ul>
+    <ul class="c"><li>Ask your doctor about a <b>prenatal + omega-3</b> if you're trying to conceive. <span class="m">Otherwise vitamin D, magnesium, and enough protein. Clear everything with your doctor first.</span></li></ul>
     <div style="height:18px"></div>
   </div>
 
   <!-- FUEL -->
   <div class="screen" id="s-fuel">
     <div class="date">FUEL · MEAL IDEAS &amp; PREP</div>
-    <h1>Hit 3,230 cal · 150g protein</h1>
-    <p class="note">A plug-and-play day. Mix and match — each block lists rough macros so you can swap freely and still land your targets. Log what you actually eat on the Today tab.</p>
+    <h1>Hit 1,750 cal · 130g protein</h1>
+    <p class="note">Whole-food and anti-inflammatory, built around cooking at home. Each block lists rough macros so you can swap freely. Log what you actually eat on the Today tab.</p>
 
     <h2>A full day that hits your macros</h2>
     <div class="plan">
-      <details open><summary>Breakfast · ~640 cal / 38P</summary><table><tr><td>3 eggs + a bagel + banana + honey</td><td class="s">38P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: Greek yogurt + berries + almonds + scoop whey</td><td class="s">40P</td></tr></table></details>
-      <details><summary>Lunch (post-workout, biggest) · ~770 cal / 58P</summary><table><tr><td>8 oz chicken + 1.5 cups rice + veg + olive oil</td><td class="s">58P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: lean beef burrito bowl (rice, beans, cheese)</td><td class="s">52P</td></tr></table></details>
-      <details><summary>Dinner (family meal) · ~700 cal / 45P</summary><table><tr><td>2 palms protein + 2–3 cupped carbs + veg</td><td class="s">45P</td></tr><tr><td class="m" style="font-size:12.5px">Salmon/steak/chicken — eat the family dinner, bigger portion</td><td class="s">—</td></tr></table></details>
-      <details><summary>Snacks &amp; fill · ~1,120 cal / 80P</summary><table><tr><td>Protein Ninja Creami (whey + milk + PB)</td><td class="s">40P</td></tr><tr><td>Greek yogurt + berries + almonds</td><td class="s">25P</td></tr><tr><td>Whey shake on big-appetite days</td><td class="s">25P</td></tr></table></details>
+      <details open><summary>Breakfast · ~400 cal / 30P</summary><table><tr><td>Eggs + sautéed greens + ½ avocado + berries</td><td class="s">28P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: Greek yogurt + berries + walnuts + flax</td><td class="s">30P</td></tr></table></details>
+      <details><summary>Lunch · ~450 cal / 35P</summary><table><tr><td>Big salad + salmon or chicken + olive oil + ⅓ cup quinoa</td><td class="s">35P</td></tr><tr><td class="m" style="font-size:12.5px">Swap: lettuce-wrapped turkey + avocado + veggies</td><td class="s">32P</td></tr></table></details>
+      <details><summary>Dinner · ~500 cal / 40P</summary><table><tr><td>Home-cooked protein + roasted veg + small sweet potato</td><td class="s">40P</td></tr><tr><td class="m" style="font-size:12.5px">Anti-inflammatory: salmon, olive oil, turmeric, greens</td><td class="s">—</td></tr></table></details>
+      <details><summary>Snacks &amp; fill · ~400 cal / 25P</summary><table><tr><td>Cottage cheese + fruit</td><td class="s">14P</td></tr><tr><td>Protein shake or a boiled egg + nuts</td><td class="s">20P</td></tr><tr><td>Hummus + veggies</td><td class="s">—</td></tr></table></details>
     </div>
-    <div class="callout"><b>Rule of thumb:</b> protein first at every meal. If the scale isn't trending +¼–½ lb/week, add one snack block. If it's climbing too fast, drop one.</div>
+    <div class="callout"><b>Rule of thumb:</b> protein + a vegetable at every meal, healthy fat daily, and plenty of water. This nourishes your body and brings inflammation down — the fat loss follows gently.</div>
 
-    <h2>Grocery staples to prep ahead</h2>
+    <h2>Grocery staples to keep around</h2>
     <ul class="c">
-      <li><b>Protein:</b> <span class="m">chicken breast, lean ground beef/turkey, eggs, Greek yogurt, whey, salmon.</span></li>
-      <li><b>Carbs:</b> <span class="m">rice, potatoes, bananas, berries, honey, bagels.</span></li>
-      <li><b>Fats:</b> <span class="m">olive oil, peanut butter, avocado, nuts, whole eggs.</span></li>
-      <li><b>Prep once:</b> <span class="m">batch-cook 2–3 lb chicken + a big pot of rice on Sunday — that's lunch handled all week.</span></li>
+      <li><b>Protein:</b> <span class="m">eggs, chicken, salmon, Greek yogurt, cottage cheese, lean turkey.</span></li>
+      <li><b>Anti-inflammatory:</b> <span class="m">leafy greens, berries, olive oil, avocado, walnuts, flax, turmeric, ginger.</span></li>
+      <li><b>Smart carbs:</b> <span class="m">quinoa, sweet potato, brown rice, fruit, beans.</span></li>
+      <li><b>Prep once:</b> <span class="m">roast a tray of veg + cook a protein you can build meals from all week.</span></li>
     </ul>
 
     <div class="callout" style="background:var(--ground)"><b>Coming soon:</b> a searchable food tracker — type or scan a food and it auto-fills the macros into your Today log. For now, use the numbers above and enter your daily totals on the Today tab.</div>
@@ -260,7 +259,7 @@
   <div class="screen" id="s-photos">
     <div class="date">PHOTOS</div>
     <h1>Progress photos</h1>
-    <p class="note">Front / side / back, relaxed &amp; flexed. Same spot, light, morning, fasted. Take your <b>Day-1 set today.</b></p>
+    <p class="note">Front / side / back, same spot and light, morning. Take your <b>Day-1 set</b> whenever you're ready — no pressure on the timing.</p>
     <label class="filebtn">＋ Add photos from your camera roll<input type="file" accept="image/*" multiple id="photo-in"></label>
     <div class="thumbs" id="thumbs"></div>
     <p class="note">These preview here and stay in your camera roll. When the full app is live, they'll upload and store on your profile automatically.</p>
@@ -279,7 +278,7 @@
 
 <script>
 (function(){
-  var KEY='apex_alex_v2';
+  var KEY='apex_maddie_v2';
   var db=JSON.parse(localStorage.getItem(KEY)||'{}');
   if(!db.days)db.days={}; if(!db.weights)db.weights=[]; if(!db.workouts)db.workouts=[]; if(!db.photos)db.photos=0; if(!db.cardio)db.cardio=[]; if(!db.subs)db.subs={};
   function save(){localStorage.setItem(KEY,JSON.stringify(db));}
@@ -291,13 +290,13 @@
 
   window.go=function(s){document.querySelectorAll('.screen').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s);});document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on',b.dataset.s===s);});window.scrollTo(0,0);if(s==='prog')drawSpark();};
 
-  var WGOAL=120;
-  if(day.water>0&&day.water<=12)day.water=day.water*8; // migrate old glass counts → oz
+  var WGOAL=90;
+  if(day.water>0&&day.water<=12)day.water=day.water*8;
   function paintWater(){var oz=day.water||0;document.getElementById('water-n').textContent=oz;document.getElementById('water-bar').style.width=Math.min(100,Math.round(oz/WGOAL*100))+'%';}
   window.water=function(n){day.water=Math.max(0,(day.water||0)+n);save();paintWater();};
   paintWater();
 
-  var SGOAL=10000;
+  var SGOAL=8000;
   document.getElementById('steps').value=day.steps||'';
   function paintSteps(){var s=+day.steps||0,p=Math.round(s/SGOAL*100);document.getElementById('steps-bar').style.width=Math.min(100,p)+'%';document.getElementById('steps-pct').textContent=p+'%';}
   window.saveSteps=function(){day.steps=document.getElementById('steps').value;save();paintSteps();toast('Steps logged ✓');};
@@ -307,7 +306,7 @@
     var t=document.getElementById('cardio-type').value,m=document.getElementById('cardio-min').value,di=document.getElementById('cardio-dist').value;
     if(!m&&!di){toast('Enter minutes');return;}
     db.cardio.unshift({date:TODAY,type:t,min:m,dist:di});save();paintCardio();
-    document.getElementById('cardio-min').value='';document.getElementById('cardio-dist').value='';toast('Cardio logged ✓');
+    document.getElementById('cardio-min').value='';document.getElementById('cardio-dist').value='';toast('Walk logged ✓');
   };
   function paintCardio(){
     var el=document.getElementById('cardio-list');if(!el)return;el.innerHTML='';
@@ -324,7 +323,7 @@
   document.getElementById('journal').value=day.journal||'';
   document.getElementById('reading').value=day.reading||'';
 
-  var MTGT={cal:3230,p:150,f:97,c:439};
+  var MTGT={cal:1750,p:130,f:62,c:165};
   var mIds={cal:'m-cal',p:'m-p',f:'m-f',c:'m-c'};
   if(!day.macros)day.macros={cal:'',p:'',f:'',c:''};
   Object.keys(mIds).forEach(function(k){var el=document.getElementById(mIds[k]);el.value=day.macros[k]||'';el.addEventListener('input',function(){day.macros[k]=el.value;save();paintMacros();});});
@@ -341,19 +340,16 @@
   paintMacros();
 
   var SPLIT={
-    'Push A':[['Barbell Bench','4×6–8'],['Incline DB Press','3×8–12'],['Shoulder Press','3×8–12'],['Lateral Raise','3×12–15'],['Triceps Pushdown','3×10–15'],['Overhead Triceps Ext.','2×12–15']],
-    'Pull A':[['Pull-ups / Pulldown','4×6–10'],['Barbell Row','3×8–10'],['Chest-Supported Row','3×10–12'],['Face Pulls','3×15'],['EZ-Bar Curl','3×8–12'],['Incline DB Curl','2×12–15']],
-    'Legs A':[['Back Squat','4×6–8'],['Romanian Deadlift','3×8–10'],['Leg Press','3×12–15'],['Seated Leg Curl','3×10–12'],['Standing Calf Raise','4×12–15'],['Hanging Leg Raise','3×10–15']],
-    'Push B':[['Overhead Press','4×6–8'],['Flat DB Press','3×8–12'],['Incline Cable Fly','3×12–15'],['DB Lateral Raise','4×12–15'],['Dips','3×8–12'],['Triceps Pushdown','2×12–15']],
-    'Pull B':[['Lat Pulldown','4×8–12'],['One-Arm DB Row','3×8–12'],['Seated Cable Row','3×10–12'],['Rear-Delt Fly','3×15'],['Preacher Curl','3×10–12'],['Cable Curl','2×12–15']],
-    'Legs B':[['Hack Squat','4×8–10'],['Bulgarian Split Squat','3×8–10/leg'],['Leg Extension','3×12–15'],['Lying Leg Curl','3×10–12'],['Seated Calf Raise','4×15'],['Cable Crunch','3×12–15']],
-    'Rest / Cardio':[['Zone 2 walk or bike','30–40 min']]
+    'Full Body A':[['Bodyweight Squat','3×10–12'],['Glute Bridge','3×12–15'],['Incline / Knee Push-up','3×8–12'],['Standing Band or Towel Row','3×12–15'],['Dead Bug','3×10/side'],['Calf Raise','3×15']],
+    'Full Body B':[['Reverse Lunge','3×8/leg'],['Single-Leg Glute Bridge','3×10/side'],['Wall Push-up','3×10–12'],['Bird-Dog','3×10/side'],['Standing Side Leg Raise','3×12/side'],['Wall Sit','3×20–30s']],
+    'Full Body C · glutes + core':[['Sumo Squat','3×12–15'],['Glute Bridge March','3×10/side'],['Quadruped Glute Kickback','3×12/side'],['Side Plank (from knees)','3×15–20s/side'],['Bird-Dog','3×10/side'],['Standing Calf Raise','3×15']],
+    'Walk / Recovery':[['Brisk walk','20–40 min']]
   };
   var sel=document.getElementById('wk-day');
   Object.keys(SPLIT).forEach(function(k){var o=document.createElement('option');o.textContent=k;sel.appendChild(o);});
   window.renderWorkout=function(){
     var ex=SPLIT[sel.value],box=document.getElementById('wk-log');box.innerHTML='';
-    document.getElementById('wk-hint').textContent='Tap an exercise name to swap it — your sets × reps stay the same. Enter what you actually hit.';
+    document.getElementById('wk-hint').textContent='Tap an exercise name to swap it — your sets × reps stay the same. Leave 3–4 reps in the tank, breathe, never grind.';
     ex.forEach(function(pair,i){
       var key=sel.value+'#'+i;
       var nm=db.subs[key]||pair[0];
@@ -414,15 +410,15 @@
   };
 
   window.exportAll=function(){
-    var L=['APEX — ALEX — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
+    var L=['APEX — MADDIE — LOG EXPORT','Generated: '+new Date().toLocaleString(),''];
     L.push('WEIGH-INS:');db.weights.forEach(function(x){L.push('  '+x.date+': '+x.w+' lb');});
     L.push('','WORKOUTS:');db.workouts.forEach(function(w){L.push('  '+w.date+' '+w.day+': '+w.sets.join(' · '));});
-    L.push('','CARDIO:');db.cardio.forEach(function(c){L.push('  '+c.date+': '+c.type+' '+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':''));});
-    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+(d.water||0)+' oz'+(d.steps?' · steps '+d.steps:'')+' · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 3230 / 150P 97F 439C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
+    L.push('','WALKS / CARDIO:');db.cardio.forEach(function(c){L.push('  '+c.date+': '+c.type+' '+(c.min?c.min+' min':'')+(c.dist?' · '+c.dist+' mi':''));});
+    L.push('','DAILY:');Object.keys(db.days).sort().forEach(function(k){var d=db.days[k];L.push('  '+k+': water '+(d.water||0)+' oz'+(d.steps?' · steps '+d.steps:'')+' · rating '+(d.rating||'-')+'/5');if(d.macros&&(d.macros.cal||d.macros.p||d.macros.f||d.macros.c))L.push('    macros hit: '+(d.macros.cal||'?')+' cal / '+(d.macros.p||'?')+'P '+(d.macros.f||'?')+'F '+(d.macros.c||'?')+'C  (target 1750 / 130P 62F 165C)');if(d.food)L.push('    food notes: '+d.food);if(d.journal)L.push('    journal: '+d.journal);if(d.reading)L.push('    reading: '+d.reading);});
     L.push('','Photos added: '+db.photos);
     var txt=L.join('\n');
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast('Copied — send to coach');},dl);}else dl();
-    function dl(){var b=new Blob([txt],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='apex-alex-logs.txt';a.click();toast('Downloaded ✓');}
+    function dl(){var b=new Blob([txt],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='apex-maddie-logs.txt';a.click();toast('Downloaded ✓');}
   };
 
   var tt=document.getElementById('toast');
