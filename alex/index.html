@@ -351,6 +351,9 @@
   };
   var sel=document.getElementById('wk-day');
   Object.keys(SPLIT).forEach(function(k){var o=document.createElement('option');o.textContent=k;sel.appendChild(o);});
+  function exType(pair){var t=pair[2];if(t)return t;var rx=(pair[1]||'');if(/min/i.test(rx))return 'dur';if(/\ds/i.test(rx))return 'hold';var n=(pair[0]||'').toLowerCase();if(/bodyweight|dead bug|bird|pallof|hanging|dips|band pull|push-?up|glute bridge|wall|plank|superman|mountain/.test(n))return 'body';return 'lift';}
+  function fld(lab,f,mode,ph){return '<div style="flex:1"><span class="lab">'+lab+'</span><input type="number" inputmode="'+(mode||'numeric')+'" data-f="'+f+'" placeholder="'+(ph||'')+'"></div>';}
+  function exFields(t){if(t==='dur')return '<div class="sets">'+fld('minutes','min','numeric','min')+'</div>';if(t==='hold')return '<div class="sets">'+fld('time (s)','t','numeric','sec')+fld('sets','s','numeric','sets')+'</div>';if(t==='body')return '<div class="sets">'+fld('reps','r','numeric','reps')+fld('sets','s','numeric','sets')+'</div>';return '<div class="sets">'+fld('weight','w','decimal','lb')+fld('reps','r','numeric','reps')+fld('sets','s','numeric','sets')+'</div>';}
   window.renderWorkout=function(){
     var ex=SPLIT[sel.value],box=document.getElementById('wk-log');box.innerHTML='';
     document.getElementById('wk-hint').textContent='Tap an exercise name to swap it — your sets × reps stay the same. Enter what you actually hit.';
@@ -358,7 +361,7 @@
       var key=sel.value+'#'+i;
       var nm=db.subs[key]||pair[0];
       var wrap=document.createElement('div');wrap.className='ex';
-      wrap.innerHTML='<div class="name"><input class="exname" data-f="name" value="'+nm+'"><span class="rx">'+pair[1]+'</span></div><div class="sets"><div style="flex:1"><span class="lab">weight</span><input type="number" inputmode="decimal" data-f="w" placeholder="lb"></div><div style="flex:1"><span class="lab">reps</span><input type="number" inputmode="numeric" data-f="r" placeholder="reps"></div><div style="flex:1"><span class="lab">sets</span><input type="number" inputmode="numeric" data-f="s" placeholder="sets"></div></div>';
+      wrap.innerHTML='<div class="name"><input class="exname" data-f="name" value="'+nm+'"><span class="rx">'+pair[1]+'</span></div>'+exFields(exType(pair));
       box.appendChild(wrap);
       var ni=wrap.querySelector('.exname');
       ni.addEventListener('input',function(){if(ni.value.trim()){db.subs[key]=ni.value;}else{delete db.subs[key];}save();});
@@ -369,8 +372,12 @@
     var ex=SPLIT[sel.value],entries=[];
     document.querySelectorAll('#wk-log .ex').forEach(function(el,i){
       var nm=el.querySelector('[data-f=name]').value.trim()||ex[i][0];
-      var w=el.querySelector('[data-f=w]').value,r=el.querySelector('[data-f=r]').value,s=el.querySelector('[data-f=s]').value;
-      if(w||r||s)entries.push(nm+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb');
+      var t=exType(ex[i]),g=function(f){var e=el.querySelector('[data-f='+f+']');return e?e.value:'';};var entry='';
+      if(t==='dur'){var m=g('min');if(m)entry=nm+': '+m+' min';}
+      else if(t==='hold'){var ti=g('t'),s=g('s');if(ti||s)entry=nm+': '+(s||'?')+'×'+(ti||'?')+'s';}
+      else if(t==='body'){var r=g('r'),s=g('s');if(r||s)entry=nm+': '+(s||'?')+'×'+(r||'?');}
+      else{var w=g('w'),r=g('r'),s=g('s');if(w||r||s)entry=nm+': '+(s||'?')+'×'+(r||'?')+' @ '+(w||'?')+'lb';}
+      if(entry)entries.push(entry);
     });
     if(!entries.length){toast('Log at least one set');return;}
     db.workouts.unshift({date:TODAY,day:sel.value,sets:entries});save();paintHistory();toast('Workout saved ✓');
